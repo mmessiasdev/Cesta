@@ -47,6 +47,9 @@ dependencies:
   flutter_credit_card: ^4.1.0
   mask_text_input_formatter: ^2.9.0
   cached_network_image: ^3.4.1
+  mime: ^2.0.0
+  http_parser: ^4.1.2
+  image_picker: ^1.1.2
 
 
 

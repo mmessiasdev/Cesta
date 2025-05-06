@@ -1,4 +1,7 @@
+import 'package:NIDE/component/buttons.dart';
+import 'package:NIDE/component/padding.dart';
 import 'package:NIDE/env.dart';
+import 'package:NIDE/view/students/addbaskets.dart';
 import 'package:flutter/material.dart';
 import 'package:NIDE/model/students.dart';
 import 'package:NIDE/component/colors.dart';
@@ -6,8 +9,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class StudentDetailScreen extends StatelessWidget {
   final Student student;
+  final String token;
 
-  const StudentDetailScreen({Key? key, required this.student})
+  const StudentDetailScreen(
+      {Key? key, required this.student, required this.token})
       : super(key: key);
 
   @override
@@ -27,6 +32,30 @@ class StudentDetailScreen extends StatelessWidget {
               children: [
                 // Seção de informações pessoais
                 _buildPersonalInfoSection(),
+                const SizedBox(height: 24),
+                GestureDetector(
+                  child: DefaultButton(
+                    text: "Adicionar Cestá básica",
+                    padding: defaultPadding,
+                    color: PrimaryColor,
+                    colorText: lightColor,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddBasketScreen(
+                          token: token,
+                          studentId: student.id, // ID do aluno
+                        ),
+                      ),
+                    ).then((success) {
+                      if (success == true) {
+                        // Atualize a lista de cestas se necessário
+                      }
+                    });
+                  },
+                ),
                 const SizedBox(height: 24),
 
                 // Seção de cestas

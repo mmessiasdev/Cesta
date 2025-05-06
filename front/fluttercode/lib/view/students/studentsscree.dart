@@ -113,8 +113,10 @@ class _StudentsScreenState extends State<StudentsScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  StudentDetailScreen(student: student),
+                              builder: (context) => StudentDetailScreen(
+                                student: student,
+                                token: widget.token,
+                              ),
                             ),
                           );
                         },
