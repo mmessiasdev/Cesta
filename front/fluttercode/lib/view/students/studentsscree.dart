@@ -5,6 +5,7 @@ import 'package:NIDE/component/widgets/header.dart';
 import 'package:NIDE/model/students.dart';
 import 'package:NIDE/service/remote/students/crud.dart';
 import 'package:NIDE/view/students/addstudents.dart';
+import 'package:NIDE/view/students/studentdetail.dart';
 import 'package:flutter/material.dart';
 
 class StudentsScreen extends StatefulWidget {
@@ -42,12 +43,10 @@ class _StudentsScreenState extends State<StudentsScreen> {
       backgroundColor: lightColor,
       body: Padding(
         padding: defaultPaddingHorizon,
-        child: Column(
+        child: ListView(
           children: [
             MainHeader(title: "Cesta"),
-            SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
             IconList(
               onClick: () {
                 Navigator.push(
@@ -62,9 +61,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
               icon: Icons.add,
               title: "Adicionar aluno",
             ),
-            SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             TextField(
               controller: searchController,
               decoration: InputDecoration(
@@ -79,33 +76,55 @@ class _StudentsScreenState extends State<StudentsScreen> {
               ),
               onSubmitted: (_) => _searchStudents(),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: FutureBuilder<List<Student>>(
-                future: futureStudents,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Erro: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(
+            const SizedBox(height: 20),
+            FutureBuilder<List<Student>>(
+              future: futureStudents,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text('Erro: ${snapshot.error}'),
+                    ),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
                       child: Text(
                         currentSearch.isEmpty
                             ? 'Nenhum estudante encontrado'
                             : 'Nenhum resultado para "$currentSearch"',
                       ),
-                    );
-                  } else {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        Student student = snapshot.data![index];
-                        return Card(
-                          margin: const EdgeInsets.all(8.0),
-                          child: Padding(
+                    ),
+                  );
+                } else {
+                  return Column(
+                    children: snapshot.data!.map((student) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  StudentDetailScreen(student: student),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          margin: defaultPadding, // Remove a margem padrão
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Container(
+                            width: double.infinity, // Ocupa toda a largura
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,12 +152,12 @@ class _StudentsScreenState extends State<StudentsScreen> {
                               ],
                             ),
                           ),
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                }
+              },
             ),
           ],
         ),
