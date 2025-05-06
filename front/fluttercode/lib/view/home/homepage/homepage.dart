@@ -7,6 +7,7 @@ import 'package:NIDE/service/local/auth.dart';
 import 'package:NIDE/service/remote/account/crud.dart';
 import 'package:NIDE/view/home/account/account.dart';
 import 'package:NIDE/view/home/plan/listplanscreen.dart';
+import 'package:NIDE/view/students/studentsscree.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -101,14 +102,15 @@ class _HomePageState extends State<HomePage> {
                                   const SizedBox(
                                     height: 15,
                                   ),
-                                  const Column(
+                                  Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
 
                                     // Lista de itens irão ficar aqui
 
-                                    children: [],
+                                    children: [
+                                    ],
                                   ),
                                   Padding(
                                     padding: defaultPadding,

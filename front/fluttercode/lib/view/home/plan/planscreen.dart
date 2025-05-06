@@ -8,7 +8,7 @@ import 'package:NIDE/service/local/auth.dart';
 import 'package:NIDE/service/remote/auth.dart';
 import 'package:NIDE/service/remote/plan/crud.dart';
 import 'package:NIDE/view/home/plan/payment/creditcard/payment_form.dart';
-import 'package:NIDE/view/home/plan/payment/pixqrcode.dart';
+import 'package:NIDE/view/home/plan/payment/pix/pixqrcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart'; // Para usar kIsWeb
 

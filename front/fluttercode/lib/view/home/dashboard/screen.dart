@@ -1,6 +1,7 @@
 import 'package:NIDE/service/local/auth.dart';
 import 'package:NIDE/view/home/account/auth/signin.dart';
 import 'package:NIDE/view/home/homepage/homepage.dart';
+import 'package:NIDE/view/students/studentsscree.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
@@ -44,7 +45,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: IndexedStack(
                     index: controller.tabIndex,
                     children: [
-                      HomePage(),
+                      StudentsScreen(token: token),
                     ],
                   ),
                 ),
