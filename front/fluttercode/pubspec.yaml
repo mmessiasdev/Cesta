@@ -86,10 +86,6 @@ flutter:
     - assets/images/logo/blue.png
 
 
-
-    - .env
-
-
   fonts:
     - family: Montserrat
       fonts:

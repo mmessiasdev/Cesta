@@ -37,6 +37,10 @@
     "father": {
       "model": "profile",
       "via": "dependents"
+    },
+    "baskets": {
+      "via": "profile",
+      "collection": "basket"
     }
   }
 }
