@@ -1,6 +1,6 @@
 {
-    "name": "NIDE",
-    "short_name": "NIDE",
+    "name": "Cesta",
+    "short_name": "Cesta",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

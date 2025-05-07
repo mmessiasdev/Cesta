@@ -1,5 +1,5 @@
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/texts.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/texts.dart';
 import 'package:flutter/material.dart';
 
 class ListTitle extends StatelessWidget {

@@ -1,12 +1,12 @@
-import 'package:NIDE/component/buttons/iconlist.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/defaultTitleButtom.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/component/widgets/infotext.dart';
-import 'package:NIDE/controller/controllers.dart';
-import 'package:NIDE/service/local/auth.dart';
-import 'package:NIDE/view/home/plan/listplanscreen.dart';
+import 'package:Cesta/component/buttons/iconlist.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/defaultTitleButtom.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/component/widgets/infotext.dart';
+import 'package:Cesta/controller/controllers.dart';
+import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/view/home/plan/listplanscreen.dart';
 import 'package:flutter/material.dart';
 import 'auth/signin.dart';
 
@@ -65,6 +65,7 @@ class _AccountScreenState extends State<AccountScreen> {
             MainHeader(
                 title: "Seu Perfil",
                 maxl: 1,
+                buttom: widget.buttom,
                 icon: Icons.arrow_back_ios,
                 onClick: () {
                   Navigator.pop(context);

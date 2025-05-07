@@ -1,10 +1,10 @@
-import 'package:NIDE/model/profiles.dart';
-import 'package:NIDE/model/students.dart';
+import 'package:Cesta/model/profiles.dart';
+import 'package:Cesta/model/students.dart';
 
 class Basket {
   final int id;
-  final Profile profile;
-  final Student student;
+  final dynamic profile;
+  final dynamic student;
   final DateTime publishedAt;
   final DateTime createdAt;
   final DateTime updatedAt;

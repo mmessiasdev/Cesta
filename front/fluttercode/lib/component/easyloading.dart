@@ -1,4 +1,4 @@
-import 'package:NIDE/component/colors.dart';
+import 'package:Cesta/component/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 

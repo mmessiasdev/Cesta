@@ -1,13 +1,13 @@
-import 'package:NIDE/component/defaultTitleButtom.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/inputdefault.dart';
-import 'package:NIDE/component/inputlight.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/texts.dart';
-import 'package:NIDE/component/widgets/title.dart';
-import 'package:NIDE/controller/controllers.dart';
-import 'package:NIDE/extention/string_extention.dart';
-import 'package:NIDE/view/home/account/auth/signup.dart';
+import 'package:Cesta/component/defaultTitleButtom.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/inputdefault.dart';
+import 'package:Cesta/component/inputlight.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/texts.dart';
+import 'package:Cesta/component/widgets/title.dart';
+import 'package:Cesta/controller/controllers.dart';
+import 'package:Cesta/extention/string_extention.dart';
+import 'package:Cesta/view/home/account/auth/signup.dart';
 import 'package:flutter/material.dart';
 
 class LoginContent extends StatefulWidget {

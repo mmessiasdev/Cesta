@@ -1,12 +1,13 @@
-import 'package:NIDE/service/local/auth.dart';
-import 'package:NIDE/view/home/account/auth/signin.dart';
-import 'package:NIDE/view/home/homepage/homepage.dart';
-import 'package:NIDE/view/students/studentsscree.dart';
+import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/view/home/account/account.dart';
+import 'package:Cesta/view/home/account/auth/signin.dart';
+import 'package:Cesta/view/home/homepage/homepage.dart';
+import 'package:Cesta/view/students/studentsscree.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/controller/dashboard.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/controller/dashboard.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -52,6 +53,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         token: token,
                         profileId: int.parse(profileId.toString()),
                       ),
+                      AccountScreen(
+                        buttom: false,
+                        isClickableAddDependent: true,
+                        isClickableSeller: true,
+                      ),
                     ],
                   ),
                 ),
@@ -65,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     backgroundColor: PrimaryColor,
                     unselectedItemColor: lightColor,
                     showUnselectedLabels: true,
-                    selectedItemColor: SecudaryColor,
+                    selectedItemColor: lightColor.withOpacity(.5),
                     snakeViewColor: PrimaryColor,
                     currentIndex: controller.tabIndex,
                     onTap: (val) {
@@ -79,7 +85,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       )),
                       BottomNavigationBarItem(
                         icon: Icon(
-                          Icons.wallet,
+                          Icons.person,
                           size: 30,
                         ),
                       ),

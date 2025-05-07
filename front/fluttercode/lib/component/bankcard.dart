@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/texts.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/texts.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -41,7 +41,7 @@ class BankCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SubTextSized(
-                    text: "NIDE",
+                    text: "Cesta",
                     size: 30,
                     fontweight: FontWeight.w600,
                     color: lightColor,
@@ -173,7 +173,7 @@ class ServiceCard extends StatelessWidget {
                     color: lightColor,
                   ),
                   SubText(
-                    text: "NIDE",
+                    text: "Cesta",
                     align: TextAlign.start,
                     color: SecudaryColor,
                   ),

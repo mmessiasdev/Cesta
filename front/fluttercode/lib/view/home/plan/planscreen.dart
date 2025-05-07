@@ -1,14 +1,14 @@
-import 'package:NIDE/component/buttons.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/texts.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/controller/auth.dart';
-import 'package:NIDE/service/local/auth.dart';
-import 'package:NIDE/service/remote/auth.dart';
-import 'package:NIDE/service/remote/plan/crud.dart';
-import 'package:NIDE/view/home/plan/payment/creditcard/payment_form.dart';
-import 'package:NIDE/view/home/plan/payment/pix/pixqrcode.dart';
+import 'package:Cesta/component/buttons.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/texts.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/controller/auth.dart';
+import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/service/remote/auth.dart';
+import 'package:Cesta/service/remote/plan/crud.dart';
+import 'package:Cesta/view/home/plan/payment/creditcard/payment_form.dart';
+import 'package:Cesta/view/home/plan/payment/pix/pixqrcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart'; // Para usar kIsWeb
 

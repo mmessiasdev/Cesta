@@ -1,5 +1,5 @@
-import 'package:NIDE/service/remote/plan/crud.dart';
-import 'package:NIDE/view/home/dashboard/screen.dart';
+import 'package:Cesta/service/remote/plan/crud.dart';
+import 'package:Cesta/view/home/dashboard/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

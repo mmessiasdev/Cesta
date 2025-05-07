@@ -1,11 +1,10 @@
-import 'package:NIDE/component/buttons.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/texts.dart';
-import 'package:NIDE/env.dart';
-import 'package:NIDE/view/students/addbaskets.dart';
+import 'package:Cesta/component/buttons.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/env.dart';
+import 'package:Cesta/view/students/addbaskets.dart';
 import 'package:flutter/material.dart';
-import 'package:NIDE/model/students.dart';
-import 'package:NIDE/component/colors.dart';
+import 'package:Cesta/model/students.dart';
+import 'package:Cesta/component/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class StudentDetailScreen extends StatelessWidget {
@@ -40,13 +39,13 @@ class StudentDetailScreen extends StatelessWidget {
                 const SizedBox(height: 24),
                 GestureDetector(
                   child: DefaultButton(
-                    text: "Adicionar Cestá básica",
+                    text: "Adicionar Cesta básica",
                     padding: defaultPadding,
                     color: PrimaryColor,
                     colorText: lightColor,
                   ),
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddBasketScreen(
@@ -209,14 +208,16 @@ class StudentDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Icon(
                   Icons.shopping_basket,
                   size: 20,
                   color: isMostRecent ? Colors.blue : Colors.grey,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(height: 8),
                 Text(
                   _formatDate(basket.createdAt),
                   style: TextStyle(
@@ -227,7 +228,7 @@ class StudentDetailScreen extends StatelessWidget {
                   ),
                 ),
                 if (isMostRecent) ...[
-                  const SizedBox(width: 8),
+                  const SizedBox(height: 8),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -278,11 +279,6 @@ class StudentDetailScreen extends StatelessWidget {
                     .map((comprovant) =>
                         _buildComprovantThumbnail(comprovant, context))
                     .toList(),
-              ),
-              const SizedBox(height: 20),
-              SubText(
-                text: "Usuário cadastrador: ${basket.profile}",
-                align: TextAlign.start,
               ),
             ],
           ],

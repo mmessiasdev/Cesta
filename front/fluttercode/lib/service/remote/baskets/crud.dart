@@ -1,8 +1,8 @@
 // services/basket_service.dart
 import 'dart:convert';
 import 'dart:io';
-import 'package:NIDE/env.dart';
-import 'package:NIDE/model/students.dart';
+import 'package:Cesta/env.dart';
+import 'package:Cesta/model/students.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';

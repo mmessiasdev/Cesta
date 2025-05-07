@@ -1,13 +1,13 @@
-import 'package:NIDE/component/buttons.dart';
-import 'package:NIDE/component/inputlogin.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/widgets/title.dart';
-import 'package:NIDE/controller/controllers.dart';
-import 'package:NIDE/view/home/account/auth/signin.dart';
-import 'package:NIDE/view/home/dashboard/screen.dart';
+import 'package:Cesta/component/buttons.dart';
+import 'package:Cesta/component/inputlogin.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/widgets/title.dart';
+import 'package:Cesta/controller/controllers.dart';
+import 'package:Cesta/view/home/account/auth/signin.dart';
+import 'package:Cesta/view/home/dashboard/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/texts.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/texts.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);

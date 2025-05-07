@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:NIDE/env.dart';
-import 'package:NIDE/model/plans.dart';
+import 'package:Cesta/env.dart';
+import 'package:Cesta/model/plans.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 

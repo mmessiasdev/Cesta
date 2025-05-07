@@ -1,14 +1,14 @@
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/planid.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/component/widgets/plancontainer.dart';
-import 'package:NIDE/model/plans.dart';
-import 'package:NIDE/service/local/auth.dart';
-import 'package:NIDE/service/remote/account/crud.dart';
-import 'package:NIDE/service/remote/auth.dart';
-import 'package:NIDE/service/remote/plan/crud.dart';
-import 'package:NIDE/view/home/plan/planscreen.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/planid.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/component/widgets/plancontainer.dart';
+import 'package:Cesta/model/plans.dart';
+import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/service/remote/account/crud.dart';
+import 'package:Cesta/service/remote/auth.dart';
+import 'package:Cesta/service/remote/plan/crud.dart';
+import 'package:Cesta/view/home/plan/planscreen.dart';
 import 'package:flutter/material.dart';
 
 class ListPlanScreen extends StatefulWidget {

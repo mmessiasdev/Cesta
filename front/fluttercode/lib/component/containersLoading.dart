@@ -1,7 +1,7 @@
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/texts.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/texts.dart';
 import 'package:flutter/material.dart';
-import 'package:NIDE/component/colors.dart';
+import 'package:Cesta/component/colors.dart';
 import 'package:shimmer/shimmer.dart';
 
 class WidgetLoading extends StatelessWidget {

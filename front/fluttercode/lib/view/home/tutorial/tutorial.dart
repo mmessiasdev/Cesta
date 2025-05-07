@@ -1,9 +1,9 @@
-import 'package:NIDE/component/buttons.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/texts.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/view/home/account/auth/signin.dart';
+import 'package:Cesta/component/buttons.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/texts.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/view/home/account/auth/signin.dart';
 import 'package:flutter/material.dart';
 
 class TutorialScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
   // Lista de textos ou conteúdo para as páginas do tutorial
   final List<Widget> _pages = [
     const TutorialPage(
-      title: 'NIDE!',
+      title: 'Cesta!',
       subtitle: 'O seu app de beneficios.',
       description:
           "Desconto em lojas online e fisicas, serviços online e muito mais!",

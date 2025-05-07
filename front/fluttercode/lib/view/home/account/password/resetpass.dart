@@ -1,6 +1,6 @@
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/service/remote/account/password/crud.dart';
-import 'package:NIDE/view/home/account/password/newpass.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/service/remote/account/password/crud.dart';
+import 'package:Cesta/view/home/account/password/newpass.dart';
 import 'package:flutter/material.dart';
 
 class ResetCodeScreen extends StatefulWidget {

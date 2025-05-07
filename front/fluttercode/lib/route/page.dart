@@ -1,8 +1,8 @@
-import 'package:NIDE/route/route.dart';
-import 'package:NIDE/view/home/account/auth/signin.dart';
-import 'package:NIDE/view/home/dashboard/binding.dart';
-import 'package:NIDE/view/home/dashboard/screen.dart';
-import 'package:NIDE/view/home/homepage/homepage.dart';
+import 'package:Cesta/route/route.dart';
+import 'package:Cesta/view/home/account/auth/signin.dart';
+import 'package:Cesta/view/home/dashboard/binding.dart';
+import 'package:Cesta/view/home/dashboard/screen.dart';
+import 'package:Cesta/view/home/homepage/homepage.dart';
 import 'package:get/get.dart';
 
 class AppPage {

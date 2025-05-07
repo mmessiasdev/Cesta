@@ -1,10 +1,10 @@
-import 'package:NIDE/component/bannerlist.dart';
-import 'package:NIDE/component/buttons.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/inputdefault.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/texts.dart';
-import 'package:NIDE/view/home/plan/listplanscreen.dart';
+import 'package:Cesta/component/bannerlist.dart';
+import 'package:Cesta/component/buttons.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/inputdefault.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/texts.dart';
+import 'package:Cesta/view/home/plan/listplanscreen.dart';
 import 'package:flutter/material.dart';
 
 void showDraggableScrollablePlan(BuildContext context, String token) {

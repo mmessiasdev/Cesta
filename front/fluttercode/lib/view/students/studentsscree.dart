@@ -1,18 +1,19 @@
-import 'package:NIDE/component/buttons/iconlist.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/model/students.dart';
-import 'package:NIDE/service/remote/students/crud.dart';
-import 'package:NIDE/view/students/addstudents.dart';
-import 'package:NIDE/view/students/studentdetail.dart';
+import 'package:Cesta/component/buttons/iconlist.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/model/students.dart';
+import 'package:Cesta/service/remote/students/crud.dart';
+import 'package:Cesta/view/students/addstudents.dart';
+import 'package:Cesta/view/students/studentdetail.dart';
 import 'package:flutter/material.dart';
 
 class StudentsScreen extends StatefulWidget {
   final String token;
   final int profileId;
 
-  const StudentsScreen({Key? key, required this.token, required this.profileId}) : super(key: key);
+  const StudentsScreen({Key? key, required this.token, required this.profileId})
+      : super(key: key);
 
   @override
   _StudentsScreenState createState() => _StudentsScreenState();
@@ -28,7 +29,13 @@ class _StudentsScreenState extends State<StudentsScreen> {
   void initState() {
     super.initState();
     apiService = StudentsService(token: widget.token);
-    futureStudents = apiService.fetchStudents();
+    _refreshStudents();
+  }
+
+  void _refreshStudents() {
+    setState(() {
+      futureStudents = apiService.fetchStudents(searchQuery: currentSearch);
+    });
   }
 
   void _searchStudents() {
@@ -46,7 +53,9 @@ class _StudentsScreenState extends State<StudentsScreen> {
         padding: defaultPaddingHorizon,
         child: ListView(
           children: [
-            MainHeader(title: "Cesta"),
+            MainHeader(
+              title: "Cesta",
+            ),
             const SizedBox(height: 40),
             IconList(
               onClick: () {
@@ -78,6 +87,17 @@ class _StudentsScreenState extends State<StudentsScreen> {
               onSubmitted: (_) => _searchStudents(),
             ),
             const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                child: IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: _refreshStudents,
+                  tooltip: 'Atualizar lista',
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
             FutureBuilder<List<Student>>(
               future: futureStudents,
               builder: (context, snapshot) {

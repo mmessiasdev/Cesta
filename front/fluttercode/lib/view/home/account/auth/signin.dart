@@ -1,16 +1,16 @@
-import 'package:NIDE/component/buttons.dart';
-import 'package:NIDE/component/defaultButton.dart';
-import 'package:NIDE/component/inputlogin.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/widgets/contheader.dart';
-import 'package:NIDE/controller/auth.dart';
-import 'package:NIDE/view/home/account/auth/signup.dart';
-import 'package:NIDE/view/home/account/password/forgotpass.dart';
+import 'package:Cesta/component/buttons.dart';
+import 'package:Cesta/component/defaultButton.dart';
+import 'package:Cesta/component/inputlogin.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/widgets/contheader.dart';
+import 'package:Cesta/controller/auth.dart';
+import 'package:Cesta/view/home/account/auth/signup.dart';
+import 'package:Cesta/view/home/account/password/forgotpass.dart';
 import 'package:flutter/material.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/component/texts.dart';
-import 'package:NIDE/component/inputdefault.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/component/texts.dart';
+import 'package:Cesta/component/inputdefault.dart';
 import 'package:get/get.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -88,7 +88,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                             PrimaryText(
                               color: nightColor,
-                              text: "NIDE",
+                              text: "Cesta",
                             )
                           ],
                         ),

@@ -1,4 +1,4 @@
-import 'package:NIDE/controller/auth.dart';
+import 'package:Cesta/controller/auth.dart';
 
 import 'dashboard.dart';
 

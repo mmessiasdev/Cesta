@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:NIDE/env.dart';
+import 'package:Cesta/env.dart';
 import 'package:http/http.dart' as http;
 
 class MercadoPagoService {
@@ -67,7 +67,7 @@ class MercadoPagoService {
         "metadata": {
           // Adiciona metadados com o planId
           "plan_id": planId,
-          "internal_reference": "NIDE_$planId"
+          "internal_reference": "Cesta_$planId"
         },
       }),
     );

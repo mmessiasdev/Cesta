@@ -1,4 +1,8 @@
-import 'package:NIDE/service/remote/students/crud.dart';
+import 'package:Cesta/component/buttons.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/texts.dart';
+import 'package:Cesta/service/remote/students/crud.dart';
 import 'package:flutter/material.dart';
 
 class AddStudentScreen extends StatefulWidget {
@@ -170,18 +174,17 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 },
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _isLoading ? null : _submitForm,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
+              GestureDetector(
+                onTap: _isLoading ? null : _submitForm,
                 child: _isLoading
                     ? const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       )
-                    : const Text(
-                        'Cadastrar Aluno',
-                        style: TextStyle(fontSize: 18),
+                    : DefaultButton(
+                        text: 'Cadastrar Aluno',
+                        padding: defaultPadding,
+                        color: PrimaryColor,
+                        colorText: lightColor,
                       ),
               ),
             ],

@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:NIDE/env.dart';
-import 'package:NIDE/model/students.dart';
+import 'package:Cesta/env.dart';
+import 'package:Cesta/model/students.dart';
 import 'package:http/http.dart' as http;
 
 class StudentsService {
@@ -38,31 +38,31 @@ class StudentsService {
   }
 
   Future<Student> createStudent({
-  required String name,
-  required String father,
-  required String cpf,
-  required String phonenumber,
-  required String birth,
-}) async {
-  final response = await http.post(
-    Uri.parse('$baseUrl/students'),
-    headers: {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode({
-      'name': name,
-      'father': father,
-      'cpf': cpf,
-      'phonenumber': phonenumber,
-      'birth': birth,
-    }),
-  );
+    required String name,
+    required String father,
+    required String cpf,
+    required String phonenumber,
+    required String birth,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/students'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'name': name,
+        'father': father,
+        'cpf': cpf,
+        'phonenumber': phonenumber,
+        'birth': birth,
+      }),
+    );
 
-  if (response.statusCode == 200) {
-    return Student.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to create student: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      return Student.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to create student: ${response.statusCode}');
+    }
   }
-}
 }

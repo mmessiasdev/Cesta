@@ -1,10 +1,10 @@
-// import 'package:NIDE/component/containersLoading.dart';
-// import 'package:NIDE/component/widgets/itemcontainer.dart';
-// import 'package:NIDE/view/careers/home/homepage.dart';
-// import 'package:NIDE/view/club/home/homepage.dart';
-// import 'package:NIDE/view/home/account/adddependents/adddependentsscreen.dart';
-// import 'package:NIDE/view/seller/homepage/sellerhp.dart';
-// import 'package:NIDE/view/vacancies/home/homepage.dart';
+// import 'package:Cesta/component/containersLoading.dart';
+// import 'package:Cesta/component/widgets/itemcontainer.dart';
+// import 'package:Cesta/view/careers/home/homepage.dart';
+// import 'package:Cesta/view/club/home/homepage.dart';
+// import 'package:Cesta/view/home/account/adddependents/adddependentsscreen.dart';
+// import 'package:Cesta/view/seller/homepage/sellerhp.dart';
+// import 'package:Cesta/view/vacancies/home/homepage.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:flutter/material.dart';
 

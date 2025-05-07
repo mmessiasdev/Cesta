@@ -1,13 +1,13 @@
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/planid.dart';
-import 'package:NIDE/component/texts.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/service/local/auth.dart';
-import 'package:NIDE/service/remote/account/crud.dart';
-import 'package:NIDE/view/home/account/account.dart';
-import 'package:NIDE/view/home/plan/listplanscreen.dart';
-import 'package:NIDE/view/students/studentsscree.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/planid.dart';
+import 'package:Cesta/component/texts.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/service/remote/account/crud.dart';
+import 'package:Cesta/view/home/account/account.dart';
+import 'package:Cesta/view/home/plan/listplanscreen.dart';
+import 'package:Cesta/view/students/studentsscree.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                                     padding: defaultPaddingHorizon,
                                     child: MainHeader(
                                         iconColor: nightColor,
-                                        title: "NIDE",
+                                        title: "Cesta",
                                         icon: Icons.person,
                                         titleColor: nightColor,
                                         onClick: () {

@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:NIDE/component/buttons.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/service/remote/baskets/crud.dart';
+import 'package:Cesta/component/buttons.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/service/remote/baskets/crud.dart';
 import 'package:flutter/material.dart';
-import 'package:NIDE/component/colors.dart';
+import 'package:Cesta/component/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_io/io.dart' as io;
@@ -205,10 +205,9 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
 
     try {
       final response = await _basketService.addBasket(
-        studentId: widget.studentId,
-        comprovantImages: _comprovantImages,
-        profileId: widget.profileId
-      );
+          studentId: widget.studentId,
+          comprovantImages: _comprovantImages,
+          profileId: widget.profileId);
 
       if (response.statusCode == 200) {
         Navigator.pop(context, true);

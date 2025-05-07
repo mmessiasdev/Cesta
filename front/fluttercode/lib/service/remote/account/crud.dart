@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:NIDE/env.dart';
-import 'package:NIDE/model/profiles.dart';
+import 'package:Cesta/env.dart';
+import 'package:Cesta/model/profiles.dart';
 import 'package:http/http.dart' as http;
 
 class AccountService {

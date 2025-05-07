@@ -1,8 +1,8 @@
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/texts.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/view/home/account/account.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/texts.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/view/home/account/account.dart';
 import 'package:flutter/material.dart';
 
 class ContHeader extends StatelessWidget {
@@ -43,7 +43,7 @@ class ContHeader extends StatelessWidget {
               children: [
                 MainHeader(
                     iconColor: nightColor,
-                    title: "NIDE",
+                    title: "Cesta",
                     icon: icon,
                     titleColor: nightColor,
                     buttom: buttom ?? true,

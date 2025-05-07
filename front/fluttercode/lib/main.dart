@@ -1,10 +1,10 @@
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/controller/auth.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/controller/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:NIDE/route/route.dart';
-import 'package:NIDE/route/page.dart';
+import 'package:Cesta/route/route.dart';
+import 'package:Cesta/route/page.dart';
 import 'package:flutter/services.dart';
 
 // flutter run --web-renderer html --dart-define-from-file=env.local.json

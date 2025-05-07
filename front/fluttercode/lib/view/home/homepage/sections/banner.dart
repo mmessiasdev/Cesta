@@ -1,8 +1,8 @@
-// import 'package:NIDE/component/bannerlist.dart';
-// import 'package:NIDE/component/colors.dart';
-// import 'package:NIDE/component/containersLoading.dart';
-// import 'package:NIDE/service/remote/account/crud.dart';
-// import 'package:NIDE/service/remote/auth.dart';
+// import 'package:Cesta/component/bannerlist.dart';
+// import 'package:Cesta/component/colors.dart';
+// import 'package:Cesta/component/containersLoading.dart';
+// import 'package:Cesta/service/remote/account/crud.dart';
+// import 'package:Cesta/service/remote/auth.dart';
 // import 'package:carousel_slider/carousel_options.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:flutter/material.dart';

@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/texts.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/component/widgets/plancontainer.dart';
-import 'package:NIDE/model/plans.dart';
-import 'package:NIDE/service/local/auth.dart';
-import 'package:NIDE/service/remote/auth.dart';
-import 'package:NIDE/service/remote/plan/crud.dart';
-import 'package:NIDE/view/home/plan/listplanscreen.dart';
-import 'package:NIDE/view/home/plan/planscreen.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/texts.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/component/widgets/plancontainer.dart';
+import 'package:Cesta/model/plans.dart';
+import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/service/remote/auth.dart';
+import 'package:Cesta/service/remote/plan/crud.dart';
+import 'package:Cesta/view/home/plan/listplanscreen.dart';
+import 'package:Cesta/view/home/plan/planscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -68,7 +68,7 @@ class _PlanScreenState extends State<PlanScreen> {
               children: [
                 Padding(
                   padding: defaultPaddingHorizon,
-                  child: MainHeader(title: "NIDE"),
+                  child: MainHeader(title: "Cesta"),
                 ),
                 FutureBuilder(
                   future: RemoteAuthService().getProfile(token: token),
@@ -100,7 +100,7 @@ class _PlanScreenState extends State<PlanScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
-                                      PlanViewUpdated(planname: 'NIDE Free'),
+                                      PlanViewUpdated(planname: 'Cesta Free'),
                                       SizedBox(
                                         height: 35,
                                       ),

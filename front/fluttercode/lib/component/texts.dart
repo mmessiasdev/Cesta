@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:NIDE/component/colors.dart';
+import 'package:Cesta/component/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';

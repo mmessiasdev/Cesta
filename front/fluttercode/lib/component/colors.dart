@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-final Color PrimaryColor = Color.fromRGBO(23, 36, 153, 1);
-final Color SecudaryColor = Color.fromRGBO(249, 152, 48, 1);
+final Color PrimaryColor = Color.fromRGBO(19, 165, 224, 1);
+final Color SecudaryColor = Color.fromRGBO(182, 68, 153, 1);
 final Color TerciaryColor = Color.fromRGBO(78, 95, 252, 1);
 final Color FourtyColor = Color.fromRGBO(229, 229, 229, 1);
 final Color FifthColor = Color(0xFFFF05757);
 final Color SixthColor = Color.fromARGB(255, 244, 244, 244);
-final Color SeventhColor = Color.fromRGBO(249, 152, 48, 1);
+final Color SeventhColor = Color.fromRGBO(182, 68, 153, 1);
 final Color EighthColor = Color.fromRGBO(205, 255, 179, 1);
 
 final Color TerciaryColorOff = Color(0xBFBFBF);

@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:NIDE/component/planid.dart';
-import 'package:NIDE/env.dart';
-import 'package:NIDE/view/home/account/auth/signin.dart';
-import 'package:NIDE/view/home/dashboard/screen.dart';
+import 'package:Cesta/component/planid.dart';
+import 'package:Cesta/env.dart';
+import 'package:Cesta/view/home/account/auth/signin.dart';
+import 'package:Cesta/view/home/dashboard/screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:NIDE/service/local/auth.dart';
-import 'package:NIDE/service/remote/auth.dart';
+import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/service/remote/auth.dart';
 import '../model/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -122,7 +122,7 @@ class AuthController extends GetxController {
             cpf: cpf,
           );
           await LocalAuthService().storeToken(token);
-          EasyLoading.showSuccess("Bem vindo ao NIDE");
+          EasyLoading.showSuccess("Bem vindo ao Cesta");
           Navigator.of(Get.overlayContext!).pushReplacementNamed('/');
         } else {
           EasyLoading.showError(

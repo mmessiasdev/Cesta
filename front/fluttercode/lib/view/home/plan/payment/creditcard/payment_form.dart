@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:NIDE/component/buttons.dart';
-import 'package:NIDE/component/colors.dart';
-import 'package:NIDE/component/padding.dart';
-import 'package:NIDE/component/widgets/header.dart';
-import 'package:NIDE/env.dart';
-import 'package:NIDE/service/local/auth.dart';
-import 'package:NIDE/view/home/plan/payment/creditcard/payment_processing.dart';
+import 'package:Cesta/component/buttons.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/component/padding.dart';
+import 'package:Cesta/component/widgets/header.dart';
+import 'package:Cesta/env.dart';
+import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/view/home/plan/payment/creditcard/payment_processing.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
