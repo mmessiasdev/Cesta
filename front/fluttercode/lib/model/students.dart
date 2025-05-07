@@ -40,6 +40,20 @@ class Student {
           .toList(),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'father': father,
+      'phonenumber': phonenumber,
+      'birth': birth,
+      'cpf': cpf,
+      'published_at': publishedAt,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+    };
+  }
 }
 
 class Basket {

@@ -74,10 +74,10 @@ class RemoteAuthService {
     );
   }
 
-  Future<List<ProfileModel>> getProfiles({
+  Future<List<Profile>> getProfiles({
     required String? token,
   }) async {
-    List<ProfileModel> listItens = [];
+    List<Profile> listItens = [];
     var response = await client.get(
       Uri.parse('${url.toString()}/profiles'),
       headers: {
@@ -89,7 +89,7 @@ class RemoteAuthService {
     var body = jsonDecode(response.body);
     var itemCount = body;
     for (var i = 0; i < itemCount.length; i++) {
-      listItens.add(ProfileModel.fromJson(itemCount[i]));
+      listItens.add(Profile.fromJson(itemCount[i]));
     }
     return listItens;
   }

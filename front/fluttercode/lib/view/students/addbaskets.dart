@@ -5,14 +5,18 @@ import 'package:NIDE/service/remote/baskets/crud.dart';
 import 'package:flutter/material.dart';
 import 'package:NIDE/component/colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:universal_io/io.dart' as io;
 
 class AddBasketScreen extends StatefulWidget {
   final String token;
   final int studentId;
+  final int profileId;
 
   const AddBasketScreen({
     Key? key,
     required this.token,
+    required this.profileId,
     required this.studentId,
   }) : super(key: key);
 
@@ -21,16 +25,15 @@ class AddBasketScreen extends StatefulWidget {
 }
 
 class _AddBasketScreenState extends State<AddBasketScreen> {
-  final BasketService _basketService;
+  late BasketService _basketService;
   final ImagePicker _picker = ImagePicker();
-  List<File> _comprovantImages = [];
+  List<XFile> _comprovantImages = [];
   bool _isLoading = false;
-
-  _AddBasketScreenState() : _basketService = BasketService(token: '');
 
   @override
   void initState() {
     super.initState();
+    _basketService = BasketService(token: widget.token);
   }
 
   @override
@@ -78,7 +81,7 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
                   child: OutlinedButton.icon(
                     icon: const Icon(Icons.camera_alt),
                     label: const Text('Tirar Foto'),
-                    onPressed: _takePhoto,
+                    onPressed: kIsWeb ? null : _takePhoto,
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -108,7 +111,7 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
     );
   }
 
-  Widget _buildImagePreview(File image) {
+  Widget _buildImagePreview(XFile image) {
     return Stack(
       children: [
         Container(
@@ -117,7 +120,7 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             image: DecorationImage(
-              image: FileImage(image),
+              image: _getImageProvider(image),
               fit: BoxFit.cover,
             ),
           ),
@@ -144,25 +147,54 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
     );
   }
 
+  ImageProvider _getImageProvider(XFile image) {
+    if (kIsWeb) {
+      return NetworkImage(image.path);
+    } else {
+      return FileImage(File(image.path));
+    }
+  }
+
   Future<void> _takePhoto() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      setState(() {
-        _comprovantImages.add(File(image.path));
-      });
+    try {
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.camera,
+        maxWidth: 1800,
+        maxHeight: 1800,
+        imageQuality: 90,
+      );
+      if (image != null) {
+        setState(() {
+          _comprovantImages.add(image);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao capturar imagem: ${e.toString()}')),
+      );
     }
   }
 
   Future<void> _pickFromGallery() async {
-    final List<XFile> images = await _picker.pickMultiImage();
-    if (images.isNotEmpty) {
-      setState(() {
-        _comprovantImages.addAll(images.map((xfile) => File(xfile.path)));
-      });
+    try {
+      final List<XFile> images = await _picker.pickMultiImage(
+        maxWidth: 1800,
+        maxHeight: 1800,
+        imageQuality: 90,
+      );
+      if (images.isNotEmpty) {
+        setState(() {
+          _comprovantImages.addAll(images);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao selecionar imagens: ${e.toString()}')),
+      );
     }
   }
 
-  void _removeImage(File image) {
+  void _removeImage(XFile image) {
     setState(() {
       _comprovantImages.remove(image);
     });
@@ -175,18 +207,22 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
       final response = await _basketService.addBasket(
         studentId: widget.studentId,
         comprovantImages: _comprovantImages,
+        profileId: widget.profileId
       );
 
       if (response.statusCode == 200) {
         Navigator.pop(context, true);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Cesta básica adicionada com sucesso!')),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Server error: ${response.body}')),
+          SnackBar(content: Text('Erro no servidor: ${response.body}')),
         );
       }
-    } on Exception catch (e) {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
+        SnackBar(content: Text('Erro: ${e.toString()}')),
       );
     } finally {
       setState(() => _isLoading = false);

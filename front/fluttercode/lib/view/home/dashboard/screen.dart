@@ -17,6 +17,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   var token;
+  var profileId;
 
   @override
   void initState() {
@@ -26,9 +27,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void getString() async {
     var strToken = await LocalAuthService().getSecureToken();
+    var strProfileId = await LocalAuthService().getProfileId();
 
     setState(() {
       token = strToken.toString();
+      profileId = strProfileId.toString();
     });
   }
 
@@ -45,7 +48,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: IndexedStack(
                     index: controller.tabIndex,
                     children: [
-                      StudentsScreen(token: token),
+                      StudentsScreen(
+                        token: token,
+                        profileId: int.parse(profileId.toString()),
+                      ),
                     ],
                   ),
                 ),

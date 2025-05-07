@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 
 class StudentsScreen extends StatefulWidget {
   final String token;
+  final int profileId;
 
-  const StudentsScreen({Key? key, required this.token}) : super(key: key);
+  const StudentsScreen({Key? key, required this.token, required this.profileId}) : super(key: key);
 
   @override
   _StudentsScreenState createState() => _StudentsScreenState();
@@ -116,6 +117,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
                               builder: (context) => StudentDetailScreen(
                                 student: student,
                                 token: widget.token,
+                                profileId: widget.profileId,
                               ),
                             ),
                           );
