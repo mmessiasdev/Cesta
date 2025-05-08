@@ -17,8 +17,8 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  var token;
-  var profileId;
+  var token = "";
+  var profileId = "";
 
   @override
   void initState() {

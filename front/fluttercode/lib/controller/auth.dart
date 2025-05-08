@@ -106,11 +106,11 @@ class AuthController extends GetxController {
           // Decodifica o corpo da resposta (apenas depois de checar o statusCode)
           var userData = jsonDecode(userResult.body);
 
-          var email = userData['email'];
-          var id = userData['id'];
-          var fullname = userData['fullname'];
-          var cpf = userData['user']['username'];
-          var planId = userData['plan']['id'] ?? PlanConstants.freeplan;
+          var email = userData!['email'];
+          var id = userData!['id'];
+          var fullname = userData!['fullname'];
+          var cpf = userData!['user']['username'];
+          var planId = userData!['plan']['id'] ?? PlanConstants.freeplan;
 
           user.value = userFromJson(userResult.body);
 

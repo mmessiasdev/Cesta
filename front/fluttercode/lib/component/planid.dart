@@ -1,5 +1,5 @@
 class PlanConstants {
-  static const int freeplan = 5;
+  static const int freeplan = 1;
   static const int secundaryplan = 2;
   static const int terciaryplan = 3;
   static const int fourthplan = 4;
