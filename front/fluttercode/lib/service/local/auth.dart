@@ -18,13 +18,11 @@ class LocalAuthService {
     required String fullname,
     required int id,
     required String cpf,
-    required int planId,
   }) async {
     await _storage.write(key: "id", value: id.toString());
     await _storage.write(key: "email", value: email);
     await _storage.write(key: "fullname", value: fullname);
     await _storage.write(key: "username", value: cpf);
-    await _storage.write(key: "planId", value: planId.toString());
   }
 
   // Recuperar planId
