@@ -12,19 +12,19 @@ class StudentDetailScreen extends StatelessWidget {
   final String token;
   final int profileId;
 
-  const StudentDetailScreen(
-      {Key? key,
-      required this.student,
-      required this.token,
-      required this.profileId})
-      : super(key: key);
+  const StudentDetailScreen({
+    Key? key,
+    required this.student,
+    required this.token,
+    required this.profileId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: lightColor,
       appBar: AppBar(
-        title: Text(student.name),
+        title: Text(student.name ?? 'Detalhes do Aluno'),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -34,7 +34,6 @@ class StudentDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Seção de informações pessoais
                 _buildPersonalInfoSection(),
                 const SizedBox(height: 24),
                 GestureDetector(
@@ -50,20 +49,19 @@ class StudentDetailScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => AddBasketScreen(
                           token: token,
-                          studentId: student.id, // ID do aluno
+                          studentId:
+                              student.id ?? 0, // Adicionado fallback para id
                           profileId: profileId,
                         ),
                       ),
                     ).then((success) {
                       if (success == true) {
-                        // Atualize a lista de cestas se necessário
+                        // Atualizar lógica se necessário
                       }
                     });
                   },
                 ),
                 const SizedBox(height: 24),
-
-                // Seção de cestas
                 _buildBasketsSection(context),
               ],
             ),
@@ -85,14 +83,18 @@ class StudentDetailScreen extends StatelessWidget {
                 radius: 50,
                 backgroundColor: Colors.blue.shade100,
                 child: Text(
-                  student.name[0],
+                  (student.name?.isNotEmpty ?? false) ? student.name![0] : '?',
                   style: const TextStyle(fontSize: 40, color: Colors.blue),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            _buildDetailItem('Nome completo', student.name),
-            _buildDetailItem('Nome do pai', student.father ?? 'Não informado'),
+            _buildDetailItem('Nome completo', student.name ?? 'Não informado'),
+            _buildDetailItem(
+                'Nome do pai',
+                (student.father?.isNotEmpty ?? false)
+                    ? student.father!
+                    : 'Não informado'),
             _buildDetailItem('CPF', _formatCPF(student.cpf)),
             _buildDetailItem('Telefone', _formatPhone(student.phonenumber)),
             _buildDetailItem(
@@ -110,16 +112,14 @@ class StudentDetailScreen extends StatelessWidget {
     );
   }
 
-  // Adicione estas funções na sua classe _AddBasketScreenState
-
-// Formata CPF (000.000.000-00)
-  String _formatCPF(String cpf) {
-    if (cpf.length != 11) return cpf;
+  String _formatCPF(String? cpf) {
+    if (cpf == null || cpf.isEmpty || cpf.length != 11)
+      return cpf ?? 'Não informado';
     return '${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9)}';
   }
 
-// Formata telefone ((00) 00000-0000)
-  String _formatPhone(String phone) {
+  String _formatPhone(String? phone) {
+    if (phone == null || phone.isEmpty) return 'Não informado';
     if (phone.length == 11) {
       return '(${phone.substring(0, 2)}) ${phone.substring(2, 7)}-${phone.substring(7)}';
     } else if (phone.length == 10) {
@@ -128,8 +128,8 @@ class StudentDetailScreen extends StatelessWidget {
     return phone;
   }
 
-// Formata data para o padrão brasileiro (dd/MM/yyyy)
-  String _formatBirthDate(String birthDate) {
+  String _formatBirthDate(String? birthDate) {
+    if (birthDate == null || birthDate.isEmpty) return 'Não informado';
     try {
       final date = DateTime.parse(birthDate);
       return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
@@ -138,8 +138,9 @@ class StudentDetailScreen extends StatelessWidget {
     }
   }
 
-// Formata data e hora para o fuso horário brasileiro (dd/MM/yyyy HH:mm:ss)
-  String _formatDateTime(String dateTimeString) {
+  String _formatDateTime(String? dateTimeString) {
+    if (dateTimeString == null || dateTimeString.isEmpty)
+      return 'Não informado';
     try {
       final dateTime = DateTime.parse(dateTimeString).toLocal();
       return '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year} '
@@ -149,20 +150,17 @@ class StudentDetailScreen extends StatelessWidget {
     }
   }
 
-  Widget _buildBasketsSection(context) {
-    // Ordena as cestas por data (da mais recente para a mais antiga)
-    final sortedBaskets = student.baskets.toList()
-      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+  Widget _buildBasketsSection(BuildContext context) {
+    final sortedBaskets = (student.baskets ?? []).toList()
+      ..sort((a, b) => (b.createdAt ?? '').compareTo(a.createdAt ?? ''));
 
     if (sortedBaskets.isEmpty) {
       return Card(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Center(
-            child: Text(
-              'Nenhuma cesta registrada',
-              style: TextStyle(color: Colors.grey.shade600),
-            ),
+            child: Text('Nenhuma cesta registrada',
+                style: TextStyle(color: Colors.grey.shade600)),
           ),
         ),
       );
@@ -171,14 +169,11 @@ class StudentDetailScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Cestas Básicas',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey.shade800,
-          ),
-        ),
+        Text('Cestas Básicas',
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade800)),
         const SizedBox(height: 8),
         ...sortedBaskets
             .map((basket) => _buildBasketCard(basket, context))
@@ -188,225 +183,172 @@ class StudentDetailScreen extends StatelessWidget {
   }
 
   Widget _buildBasketCard(Basket basket, BuildContext context) {
-    final isMostRecent = student.baskets
+    final isMostRecent = (student.baskets ?? [])
             .map((b) => b.createdAt)
-            .toList()
-            .reduce((a, b) => a.compareTo(b) > 0 ? a : b) ==
+            .reduce((a, b) => (a ?? '').compareTo(b ?? '') > 0 ? a : b) ==
         basket.createdAt;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: isMostRecent ? 4 : 1,
-      shape: isMostRecent
-          ? RoundedRectangleBorder(
-              side: BorderSide(color: Colors.blue.shade200, width: 1),
-              borderRadius: BorderRadius.circular(8),
-            )
-          : null,
+      shape: RoundedRectangleBorder(
+        side: isMostRecent
+            ? BorderSide(color: Colors.blue.shade200, width: 1)
+            : BorderSide.none,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Icon(
-                  Icons.shopping_basket,
-                  size: 20,
-                  color: isMostRecent ? Colors.blue : Colors.grey,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  _formatDate(basket.createdAt),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight:
-                        isMostRecent ? FontWeight.bold : FontWeight.w500,
-                    color: isMostRecent ? Colors.blue : Colors.grey.shade700,
-                  ),
-                ),
-                if (isMostRecent) ...[
-                  const SizedBox(height: 8),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          'MAIS RECENTE',
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          _getTimeAgo(basket.createdAt),
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ],
-            ),
-            const SizedBox(height: 12),
-            if (basket.comprovants.isNotEmpty) ...[
-              Text(
-                'Comprovantes',
-                style: TextStyle(
+            Icon(Icons.shopping_basket,
+                size: 20, color: isMostRecent ? Colors.blue : Colors.grey),
+            const SizedBox(height: 8),
+            Text(
+              _formatDate(basket.createdAt),
+              style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey.shade700,
+                  fontWeight: isMostRecent ? FontWeight.bold : FontWeight.w500,
+                  color: isMostRecent ? Colors.blue : Colors.grey.shade700),
+            ),
+            if (isMostRecent)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('MAIS RECENTE',
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue)),
+                      const SizedBox(width: 4),
+                      Text(_getTimeAgo(basket.createdAt),
+                          style: const TextStyle(
+                              fontSize: 10, color: Colors.blue)),
+                    ],
+                  ),
                 ),
               ),
+            const SizedBox(height: 12),
+            if (basket.comprovants?.isNotEmpty ?? false) ...[
+              Text('Comprovantes',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey.shade700)),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: basket.comprovants
-                    .map((comprovant) =>
-                        _buildComprovantThumbnail(comprovant, context))
+                children: (basket.comprovants ?? [])
+                    .map((c) => _buildComprovantThumbnail(c, context))
                     .toList(),
               ),
-            ],
+            ]
           ],
         ),
       ),
     );
   }
 
-  String _getTimeAgo(String dateString) {
+  String _formatDate(String? dateTimeString) {
+    if (dateTimeString == null || dateTimeString.isEmpty)
+      return 'Não informado';
+    try {
+      final dateTime = DateTime.parse(dateTimeString).toLocal();
+      return '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year} '
+          '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}';
+    } catch (e) {
+      return dateTimeString;
+    }
+  }
+
+  String _getTimeAgo(String? dateString) {
+    if (dateString == null || dateString.isEmpty) return '';
     try {
       final date = DateTime.parse(dateString);
       final now = DateTime.now();
       final difference = now.difference(date);
-
-      if (difference.inDays == 0) {
-        return '· Hoje';
-      } else if (difference.inDays == 1) {
-        return '· Há 1 dia';
-      } else if (difference.inDays < 30) {
-        return '· Há ${difference.inDays} dias';
-      } else if (difference.inDays < 365) {
+      if (difference.inDays == 0) return '· Hoje';
+      if (difference.inDays == 1) return '· Há 1 dia';
+      if (difference.inDays < 30) return '· Há ${difference.inDays} dias';
+      if (difference.inDays < 365) {
         final months = (difference.inDays / 30).floor();
         return '· Há $months ${months == 1 ? 'mês' : 'meses'}';
-      } else {
-        final years = (difference.inDays / 365).floor();
-        return '· Há $years ${years == 1 ? 'ano' : 'anos'}';
       }
-    } catch (e) {
+      final years = (difference.inDays / 365).floor();
+      return '· Há $years ${years == 1 ? 'ano' : 'anos'}';
+    } catch (_) {
       return '';
     }
   }
 
-  Widget _buildComprovantThumbnail(Comprovant comprovant, context) {
+  Widget _buildComprovantThumbnail(
+      Comprovant comprovant, BuildContext context) {
+    final mediumUrl = comprovant.mediumUrl?.toString() ?? '';
+    final url = comprovant.url ?? '';
+
     return GestureDetector(
       onTap: () => _showFullScreenImage(comprovant, context),
       child: Hero(
-        tag: comprovant.url, // Tag única para a animação Hero
+        tag: url,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: CachedNetworkImage(
-            imageUrl: EnvSecret().BASEURL + comprovant.mediumUrl,
+            imageUrl: EnvSecret().BASEURL + mediumUrl,
             width: 100,
             height: 100,
             fit: BoxFit.cover,
-            placeholder: (context, url) => Container(
-              width: 100,
-              height: 100,
-              color: Colors.grey.shade200,
-              child: const Center(child: CircularProgressIndicator()),
-            ),
-            errorWidget: (context, url, error) => Container(
-              width: 100,
-              height: 100,
-              color: Colors.grey.shade200,
-              child: const Icon(Icons.error),
-            ),
+            placeholder: (context, url) =>
+                const Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
       ),
     );
   }
 
-  void _showFullScreenImage(Comprovant comprovant, context) {
+  void _showFullScreenImage(Comprovant comprovant, BuildContext context) {
+    final url = comprovant.url ?? '';
+    if (url.isEmpty) return;
+
     showDialog(
       context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: const EdgeInsets.all(20),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                Hero(
-                  tag: comprovant.url,
-                  child: InteractiveViewer(
-                    panEnabled: true,
-                    minScale: 0.5,
-                    maxScale: 3.0,
-                    child: CachedNetworkImage(
-                      imageUrl: EnvSecret().BASEURL + comprovant.url,
-                      placeholder: (context, url) => Container(
-                        color: Colors.grey.shade200,
-                        child: const Center(child: CircularProgressIndicator()),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: Colors.grey.shade200,
-                        child: const Center(child: Icon(Icons.error)),
-                      ),
-                    ),
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.all(20),
+        child: GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Hero(
+                tag: url,
+                child: InteractiveViewer(
+                  minScale: 0.5,
+                  maxScale: 3.0,
+                  child: CachedNetworkImage(
+                    imageUrl: EnvSecret().BASEURL + url,
+                    placeholder: (_, __) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (_, __, ___) => const Icon(Icons.error),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildComprovantImage(Comprovant comprovant) {
-    return GestureDetector(
-      onTap: () {
-        // Implementar visualização ampliada da imagem se necessário
-      },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: CachedNetworkImage(
-          imageUrl: '${EnvSecret().BASEURL}${comprovant.mediumUrl}',
-          width: 100,
-          height: 100,
-          fit: BoxFit.cover,
-          placeholder: (context, url) => Container(
-            width: 100,
-            height: 100,
-            color: Colors.grey.shade200,
-            child: const Center(child: CircularProgressIndicator()),
-          ),
-          errorWidget: (context, url, error) => Container(
-            width: 100,
-            height: 100,
-            color: Colors.grey.shade200,
-            child: const Icon(Icons.error),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
           ),
         ),
       ),
@@ -420,42 +362,15 @@ class StudentDetailScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
-          ),
+          Text(label, style: TextStyle(fontSize: 14, color: Colors.grey[600])),
           const SizedBox(height: 2),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: secondary ? Colors.grey[600] : null,
-            ),
-          ),
+          Text(value,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: secondary ? Colors.grey[600] : Colors.grey[800])),
         ],
       ),
     );
-  }
-
-  String _formatDate(String dateTimeString) {
-    try {
-      // Converte a string para DateTime e ajusta para o fuso horário local (Brasil)
-      final dateTime = DateTime.parse(dateTimeString).toLocal();
-
-      // Formata para o padrão brasileiro: dd/MM/yyyy HH:mm:ss
-      return '${dateTime.day.toString().padLeft(2, '0')}/'
-          '${dateTime.month.toString().padLeft(2, '0')}/'
-          '${dateTime.year} '
-          '${dateTime.hour.toString().padLeft(2, '0')}:'
-          '${dateTime.minute.toString().padLeft(2, '0')}:'
-          '${dateTime.second.toString().padLeft(2, '0')}';
-    } catch (e) {
-      // Caso ocorra algum erro na conversão, retorna a string original
-      return dateTimeString;
-    }
   }
 }

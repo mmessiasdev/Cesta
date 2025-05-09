@@ -1,12 +1,12 @@
+import 'package:Cesta/model/students.dart';
+import 'package:Cesta/service/remote/students/crud.dart';
+import 'package:flutter/material.dart';
 import 'package:Cesta/component/buttons/iconlist.dart';
 import 'package:Cesta/component/colors.dart';
 import 'package:Cesta/component/padding.dart';
 import 'package:Cesta/component/widgets/header.dart';
-import 'package:Cesta/model/students.dart';
-import 'package:Cesta/service/remote/students/crud.dart';
 import 'package:Cesta/view/students/addstudents.dart';
 import 'package:Cesta/view/students/studentdetail.dart';
-import 'package:flutter/material.dart';
 
 class StudentsScreen extends StatefulWidget {
   final String token;
@@ -22,7 +22,7 @@ class StudentsScreen extends StatefulWidget {
 class _StudentsScreenState extends State<StudentsScreen> {
   late Future<List<Student>> futureStudents;
   late StudentsService apiService;
-  TextEditingController searchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   String currentSearch = '';
 
   @override
@@ -47,26 +47,23 @@ class _StudentsScreenState extends State<StudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('Seu toke ${widget.token}');
     return Scaffold(
       backgroundColor: lightColor,
       body: Padding(
         padding: defaultPaddingHorizon,
         child: ListView(
           children: [
-            MainHeader(
-              title: "Cesta",
-            ),
+            MainHeader(title: "Cesta"),
             const SizedBox(height: 40),
             IconList(
               onClick: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddStudentScreen(
-                      token: widget.token,
-                    ),
+                    builder: (context) => AddStudentScreen(token: widget.token),
                   ),
-                );
+                ).then((_) => _refreshStudents());
               },
               icon: Icons.add,
               title: "Adicionar aluno",
@@ -89,12 +86,10 @@ class _StudentsScreenState extends State<StudentsScreen> {
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerLeft,
-              child: SizedBox(
-                child: IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: _refreshStudents,
-                  tooltip: 'Atualizar lista',
-                ),
+              child: IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: _refreshStudents,
+                tooltip: 'Atualizar lista',
               ),
             ),
             const SizedBox(height: 5),
@@ -121,8 +116,8 @@ class _StudentsScreenState extends State<StudentsScreen> {
                       padding: const EdgeInsets.all(20.0),
                       child: Text(
                         currentSearch.isEmpty
-                            ? 'Nenhum estudante encontrado'
-                            : 'Nenhum resultado para "$currentSearch"',
+                            ? 'Nenhum estudante encontrado.'
+                            : 'Nenhum resultado para "$currentSearch".',
                       ),
                     ),
                   );
@@ -143,12 +138,12 @@ class _StudentsScreenState extends State<StudentsScreen> {
                           );
                         },
                         child: Card(
-                          margin: defaultPadding, // Remove a margem padrão
+                          margin: defaultPadding,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: Container(
-                            width: double.infinity, // Ocupa toda a largura
+                            width: double.infinity,
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,10 +159,11 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                 Text('Pai: ${student.father}'),
                                 Text('CPF: ${student.cpf}'),
                                 Text('Telefone: ${student.phonenumber}'),
-                                Text('Nascimento: ${student.birth}'),
+                                Text(
+                                    'Nascimento: ${student.birth ?? "Não informado"}'),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Cadastrado em: ${student.createdAt}',
+                                  'Cadastrado em: ${student.createdAt ?? "Não informado"}',
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey,

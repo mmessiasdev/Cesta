@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
     if (mounted) {
       setState(() {
         token = strToken;
-        profileId = strProfileId;
+        profileId = strProfileId.toString();
         fullname = strFullname;
       });
     }
@@ -109,8 +109,7 @@ class _HomePageState extends State<HomePage> {
 
                                     // Lista de itens irão ficar aqui
 
-                                    children: [
-                                    ],
+                                    children: [],
                                   ),
                                   Padding(
                                     padding: defaultPadding,

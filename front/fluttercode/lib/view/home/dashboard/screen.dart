@@ -1,10 +1,12 @@
-import 'package:Cesta/component/colors.dart';
-import 'package:Cesta/controller/dashboard.dart';
 import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/view/home/account/account.dart';
 import 'package:Cesta/view/home/account/auth/signin.dart';
 import 'package:Cesta/view/students/studentsscree.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
+import 'package:Cesta/component/colors.dart';
+import 'package:Cesta/controller/dashboard.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -14,8 +16,8 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  String? token;
-  String? profileId;
+  var token;
+  var profileId;
 
   @override
   void initState() {
@@ -25,81 +27,74 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void getString() async {
     var strToken = await LocalAuthService().getSecureToken();
-    var strProfile = await LocalAuthService().getProfileId();
+    var strProfileId = await LocalAuthService().getProfileId();
 
     setState(() {
-      token = strToken?.toString();
-      profileId = strProfile?.toString();
+      token = strToken.toString();
+      profileId = strProfileId.toString();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GetBuilder<DashboardController>(
-        builder: (controller) {
-          // Verifica se os dados ainda não foram carregados
-          if (token == null || profileId == null) {
-            return const Center(child: SignInScreen());
-          }
+    print('Seu toke ${profileId}');
 
-          // Após carregar e validar os dados, renderiza a tela principal
-          return Scaffold(
-            backgroundColor: lightColor,
-            body: SafeArea(
-              child: IndexedStack(
-                index: controller.tabIndex,
-                children: [
-                  StudentsScreen(
-                    token: token!,
-                    profileId: int.tryParse(profileId!) ?? 0,
+    return SizedBox(
+      child: SizedBox(
+          child: GetBuilder<DashboardController>(
+        builder: (controller) => token == "null"
+            ? SignInScreen()
+            : Scaffold(
+                backgroundColor: lightColor,
+                body: SafeArea(
+                  child: IndexedStack(
+                    index: controller.tabIndex,
+                    children: [
+                      StudentsScreen(
+                        token: token,
+                        profileId: int.parse(profileId.toString()),
+                      ),
+                      AccountScreen(
+                        buttom: false,
+                        isClickableAddDependent: true,
+                        isClickableSeller: true,
+                      ),
+                    ],
                   ),
-                  // Outros widgets comentados
-                  // HomePageSale(),
-                  // HomePageSellers(),
-                  // NotificationHomePage(),
-                  // AccountScreen(
-                  //   buttom: false,
-                  // ),
-                ],
+                ),
+                bottomNavigationBar: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: PrimaryColor,
+                  ),
+                  child: SnakeNavigationBar.color(
+                    snakeShape: SnakeShape.rectangle,
+                    backgroundColor: PrimaryColor,
+                    unselectedItemColor: lightColor,
+                    showUnselectedLabels: true,
+                    selectedItemColor: lightColor.withOpacity(.5),
+                    snakeViewColor: PrimaryColor,
+                    currentIndex: controller.tabIndex,
+                    onTap: (val) {
+                      controller.updateIndex(val);
+                    },
+                    items: const [
+                      BottomNavigationBarItem(
+                          icon: Icon(
+                        Icons.home_filled,
+                        size: 30,
+                      )),
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.person,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            // Se quiser usar a bottomNavigationBar, descomente abaixo:
-            /*
-            bottomNavigationBar: Container(
-              height: 60,
-              decoration: BoxDecoration(
-                color: lightColor,
-              ),
-              child: SnakeNavigationBar.color(
-                snakeShape: SnakeShape.rectangle,
-                backgroundColor: PrimaryColor,
-                unselectedItemColor: nightColor,
-                showUnselectedLabels: true,
-                selectedItemColor: nightColor,
-                snakeViewColor: SecudaryColor,
-                currentIndex: controller.tabIndex,
-                onTap: (val) {
-                  controller.updateIndex(val);
-                },
-                items: const [
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.search_sharp, size: 30)),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.add, size: 30)),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.align_vertical_bottom, size: 30)),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.sell, size: 30)),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.people, size: 30)),
-                ],
-              ),
-            ),
-            */
-          );
-        },
-      ),
+      )),
     );
   }
 }
