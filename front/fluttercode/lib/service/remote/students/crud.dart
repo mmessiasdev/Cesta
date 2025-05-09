@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class StudentsService {
   final String baseUrl = EnvSecret().BASEURL;
-  final String token; // Seu token Bearer
+  final String token;
 
   StudentsService({required this.token});
 

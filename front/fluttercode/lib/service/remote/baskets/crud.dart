@@ -60,7 +60,6 @@ class BasketService {
   }
 
   Future<int?> _uploadImage(XFile image) async {
-    print('Seu toke $token');
     try {
       final url = Uri.parse('$baseUrl/upload');
 
