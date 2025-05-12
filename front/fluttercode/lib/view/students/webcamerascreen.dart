@@ -21,17 +21,32 @@ class _WebCameraScreenState extends State<WebCameraScreen> {
   @override
   void initState() {
     super.initState();
-    _registerViewFactory();
     _startCamera();
   }
 
   void _registerViewFactory() {
-    // Registra a fábrica de visualização
+    // Registra a fábrica de visualização com o vídeo já configurado
     ui.platformViewRegistry.registerViewFactory(
       _viewType,
-      (int viewId) => html.DivElement()
-        ..style.width = '100%'
-        ..style.height = '100%',
+      (int viewId) {
+        final container = html.DivElement()
+          ..style.width = '100%'
+          ..style.height = '100%'
+          ..style.position = 'relative'
+          ..style.overflow = 'hidden';
+
+        if (_videoElement != null) {
+          _videoElement!
+            ..style.width = '100%'
+            ..style.height = '100%'
+            ..style.objectFit = 'cover'
+            ..style.display = 'block';
+
+          container.append(_videoElement!);
+        }
+
+        return container;
+      },
     );
   }
 
@@ -52,12 +67,8 @@ class _WebCameraScreenState extends State<WebCameraScreen> {
           ..style.height = '100%'
           ..style.objectFit = 'cover';
 
-        // Adiciona o elemento de vídeo ao DOM
-        final platformView = html.document.getElementById(_viewType);
-        if (platformView != null) {
-          platformView.children.clear();
-          platformView.append(_videoElement!);
-        }
+        // Registra a view factory depois que o vídeo está pronto
+        _registerViewFactory();
 
         setState(() => _isLoading = false);
       }
@@ -80,7 +91,6 @@ class _WebCameraScreenState extends State<WebCameraScreen> {
       final ctx = canvas.context2D;
       ctx.drawImage(_videoElement!, 0, 0);
 
-      // Método corrigido para obter os bytes da imagem
       final completer = Completer<Uint8List>();
       canvas.toBlob('image/jpeg', 0.9).then((blob) {
         final reader = html.FileReader();

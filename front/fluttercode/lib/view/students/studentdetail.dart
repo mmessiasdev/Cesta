@@ -302,7 +302,7 @@ class StudentDetailScreen extends StatelessWidget {
   Widget _buildComprovantThumbnail(
       Comprovant comprovant, BuildContext context) {
     final mediumUrl = comprovant.mediumUrl?.toString() ?? '';
-    final url = comprovant.url ?? '';
+    final url = comprovant.smallUrl ?? '';
 
     return GestureDetector(
       onTap: () => _showFullScreenImage(comprovant, context),
@@ -311,7 +311,7 @@ class StudentDetailScreen extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: CachedNetworkImage(
-            imageUrl: EnvSecret().BASEURL + mediumUrl,
+            imageUrl: EnvSecret().BASEURL + url,
             width: 100,
             height: 100,
             fit: BoxFit.cover,

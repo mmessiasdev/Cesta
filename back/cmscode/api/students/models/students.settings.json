@@ -30,6 +30,15 @@
     "baskets": {
       "via": "student",
       "collection": "basket"
+    },
+    "mother": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "neighborhood": {
+      "type": "string"
     }
   }
 }

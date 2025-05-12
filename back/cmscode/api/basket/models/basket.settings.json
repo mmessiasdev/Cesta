@@ -29,8 +29,8 @@
       "via": "baskets"
     },
     "student": {
-      "model": "students",
-      "via": "baskets"
+      "via": "baskets",
+      "model": "students"
     }
   }
 }
