@@ -7,7 +7,7 @@ import 'package:Cesta/service/local/auth.dart';
 import 'package:Cesta/service/remote/account/crud.dart';
 import 'package:Cesta/view/home/account/account.dart';
 import 'package:Cesta/view/home/plan/listplanscreen.dart';
-import 'package:Cesta/view/students/studentsscree.dart';
+import 'package:Cesta/view/students/studentsscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

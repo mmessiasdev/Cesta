@@ -47,7 +47,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Seu toke ${widget.token}');
     return Scaffold(
       backgroundColor: lightColor,
       body: Padding(

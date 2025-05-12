@@ -1,7 +1,7 @@
 import 'package:Cesta/service/local/auth.dart';
 import 'package:Cesta/view/home/account/account.dart';
 import 'package:Cesta/view/home/account/auth/signin.dart';
-import 'package:Cesta/view/students/studentsscree.dart';
+import 'package:Cesta/view/students/studentsscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
@@ -37,7 +37,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Seu toke ${profileId}');
 
     return SizedBox(
       child: SizedBox(

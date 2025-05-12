@@ -21,6 +21,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   // Controladores para os campos do formulário
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _fatherController = TextEditingController();
+  final TextEditingController _motherController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _neighborhoodController = TextEditingController();
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _birthController = TextEditingController();
@@ -61,6 +64,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
           father: _fatherController.text,
           cpf: _cpfController.text,
           phonenumber: _phoneController.text,
+          mother: _motherController.text,
+          address: _addressController.text,
+          neighborhood: _neighborhoodController.text,
           birth: _birthController.text,
         );
 
@@ -121,6 +127,20 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   return null;
                 },
               ),
+              TextFormField(
+                controller: _motherController,
+                decoration: const InputDecoration(
+                  labelText: 'Nome da mãe',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira o telefone';
+                  }
+                  return null;
+                },
+              ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _cpfController,
@@ -135,6 +155,36 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   }
                   if (value.length != 11) {
                     return 'CPF deve ter 11 dígitos';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _neighborhoodController,
+                decoration: const InputDecoration(
+                  labelText: 'Bairro',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira o telefone';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _addressController,
+                decoration: const InputDecoration(
+                  labelText: 'Endereço',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira o telefone';
                   }
                   return null;
                 },

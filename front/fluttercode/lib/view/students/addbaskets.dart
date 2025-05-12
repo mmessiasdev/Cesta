@@ -2,11 +2,14 @@ import 'dart:io';
 import 'package:Cesta/component/buttons.dart';
 import 'package:Cesta/component/padding.dart';
 import 'package:Cesta/service/remote/baskets/crud.dart';
+import 'package:Cesta/view/students/camerascreen.dart';
+import 'package:Cesta/view/students/webcamerascreen.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:Cesta/component/colors.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:universal_io/io.dart' as io;
+import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
+import 'package:image_picker_web/image_picker_web.dart';
 
 class AddBasketScreen extends StatefulWidget {
   final String token;
@@ -81,7 +84,7 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
                   child: OutlinedButton.icon(
                     icon: const Icon(Icons.camera_alt),
                     label: const Text('Tirar Foto'),
-                    onPressed: kIsWeb ? null : _takePhoto,
+                    onPressed: _takePhoto,
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -157,16 +160,32 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
 
   Future<void> _takePhoto() async {
     try {
-      final XFile? image = await _picker.pickImage(
-        source: ImageSource.camera,
-        maxWidth: 1800,
-        maxHeight: 1800,
-        imageQuality: 90,
-      );
-      if (image != null) {
-        setState(() {
-          _comprovantImages.add(image);
-        });
+      if (kIsWeb) {
+        // Para web - usa nossa implementação personalizada
+        final imageBytes = await Navigator.push<Uint8List>(
+          context,
+          MaterialPageRoute(builder: (context) => WebCameraScreen()),
+        );
+
+        if (imageBytes != null) {
+          final image = XFile.fromData(
+            imageBytes,
+            name: 'foto_${DateTime.now().millisecondsSinceEpoch}.jpg',
+            mimeType: 'image/jpeg',
+          );
+          setState(() => _comprovantImages.add(image));
+        }
+      } else if (Platform.isAndroid || Platform.isIOS) {
+        // Para mobile
+        final image = await ImagePicker().pickImage(
+          source: ImageSource.camera,
+          maxWidth: 1800,
+          maxHeight: 1800,
+          imageQuality: 90,
+        );
+        if (image != null) {
+          setState(() => _comprovantImages.add(image));
+        }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

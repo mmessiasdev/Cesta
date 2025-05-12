@@ -95,8 +95,15 @@ class StudentDetailScreen extends StatelessWidget {
                 (student.father?.isNotEmpty ?? false)
                     ? student.father!
                     : 'Não informado'),
+            _buildDetailItem(
+                'Nome da mãe',
+                (student.mother?.isNotEmpty ?? false)
+                    ? student.mother!
+                    : 'Não informado'),
             _buildDetailItem('CPF', _formatCPF(student.cpf)),
             _buildDetailItem('Telefone', _formatPhone(student.phonenumber)),
+            _buildDetailItem('Bairro', _formatPhone(student.neighborhood)),
+            _buildDetailItem('Endereço', _formatPhone(student.address)),
             _buildDetailItem(
                 'Data de nascimento', _formatBirthDate(student.birth)),
             const Divider(height: 30),

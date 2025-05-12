@@ -1,24 +1,18 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:Cesta/component/planid.dart';
 import 'package:Cesta/env.dart';
-import 'package:Cesta/view/home/account/auth/signin.dart';
-import 'package:Cesta/view/home/dashboard/screen.dart';
-import 'package:flutter/foundation.dart';
+import 'package:Cesta/service/local/auth.dart';
+import 'package:Cesta/service/remote/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:Cesta/service/local/auth.dart';
-import 'package:Cesta/service/remote/auth.dart';
-import '../model/user.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:uuid/uuid.dart'; // Você pode adicionar este pacote para gerar UUIDs únicas
+import 'package:uuid/uuid.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
-  Rxn<User> user = Rxn<User>();
+
   final urlEnv = EnvSecret().BASEURL;
+
   final MERCADOPAGOTOKEN = EnvSecret().MERCADOPAGOTOKEN;
 
   @override
@@ -59,16 +53,13 @@ class AuthController extends GetxController {
 
         // Verificar se a criação do perfil foi bem-sucedida
         if (userResult.statusCode == 200) {
-          user.value = userFromJson(userResult.body);
-          // Redirecionar para a tela de login
-          Navigator.of(Get.overlayContext!).pushReplacementNamed('/');
           EasyLoading.showSuccess("Conta criada. Confirme suas informações.");
+          // Redirecionar para a tela de login
+          Navigator.of(Get.overlayContext!).pushReplacementNamed('/login');
         } else {
           // Mostrar erro se a criação do perfil falhou
-          EasyLoading.showError('Perfil não foi criado. Tente novamente!');
+          EasyLoading.showError('Alguma coisa deu errado. Tente novamente!');
         }
-      } else if (result.statusCode == 400) {
-        EasyLoading.showError('Já existe uma conta com esse CPF ou email.');
       } else {
         // Mostrar erro se o registro do usuário falhou
         EasyLoading.showError('Alguma coisa deu errado. Tente novamente!');
@@ -84,34 +75,42 @@ class AuthController extends GetxController {
 
   void signIn({required String email, required String password}) async {
     try {
-      EasyLoading.show(status: 'Loading...', dismissOnTap: false);
+      EasyLoading.show(
+        status: 'Loading...',
+        dismissOnTap: false,
+      );
 
-      var result =
-          await RemoteAuthService().signIn(email: email, password: password);
+      // Faz a chamada para signIn
+      var result = await RemoteAuthService().signIn(
+        email: email,
+        password: password,
+      );
 
       if (result.statusCode == 200) {
+        // Pega o token do corpo da resposta
         String token = json.decode(result.body)['jwt'];
+
+        // Faz a chamada para getProfile
         var userResult = await RemoteAuthService().getProfile(token: token);
 
         if (userResult.statusCode == 200) {
+          // Decodifica o corpo da resposta (apenas depois de checar o statusCode)
           var userData = jsonDecode(userResult.body);
 
           var email = userData['email'];
           var id = userData['id'];
           var fullname = userData['fullname'];
-          var cpf = userData['user']['username'];
+          var username = userData['user']['username'];
 
-          user.value = userFromJson(userResult.body);
-
+          await LocalAuthService().storeToken(token);
           await LocalAuthService().storeAccount(
             id: id,
             email: email,
             fullname: fullname,
-            cpf: cpf,
+            cpf: username,
           );
 
-          await LocalAuthService().storeToken(token);
-          EasyLoading.showSuccess("Bem vindo ao Cesta");
+          EasyLoading.showSuccess("Bem vindo ao Analytics");
           Navigator.of(Get.overlayContext!).pushReplacementNamed('/');
         } else {
           EasyLoading.showError(
@@ -181,7 +180,6 @@ class AuthController extends GetxController {
 
     if (response.statusCode == 200) {
       final paymentResponse = jsonDecode(response.body);
-      print(paymentResponse['status']);
 
       // Verifique se o status do pagamento é "approved"
       if (paymentResponse['status'] == "approved") {
@@ -197,15 +195,7 @@ class AuthController extends GetxController {
   }
 
   void signOut(BuildContext context) async {
-    user.value = null;
     await LocalAuthService().clear();
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const DashboardScreen(),
-      ),
-      (route) => false, // Esta condição remove todas as rotas anteriores
-    );
+    Navigator.of(context).pushReplacementNamed('/login');
   }
 }

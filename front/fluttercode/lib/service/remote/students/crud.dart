@@ -43,6 +43,9 @@ class StudentsService {
     required String cpf,
     required String phonenumber,
     required String birth,
+    required String mother,
+    required String address,
+    required String neighborhood,
   }) async {
     final response = await http.post(
       Uri.parse('$baseUrl/students'),
@@ -56,6 +59,9 @@ class StudentsService {
         'cpf': cpf,
         'phonenumber': phonenumber,
         'birth': birth,
+        'mother': mother,
+        'address': address,
+        'neighborhood': neighborhood,
       }),
     );
 
