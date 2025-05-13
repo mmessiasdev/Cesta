@@ -25,8 +25,8 @@
       "pluginOptions": {}
     },
     "profile": {
-      "model": "profile",
-      "via": "baskets"
+      "via": "baskets",
+      "model": "profile"
     },
     "student": {
       "via": "baskets",

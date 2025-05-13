@@ -1,9 +1,16 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:Cesta/component/buttons.dart';
 import 'package:Cesta/component/colors.dart';
 import 'package:Cesta/component/padding.dart';
-import 'package:Cesta/component/texts.dart';
 import 'package:Cesta/service/remote/students/crud.dart';
+import 'package:Cesta/view/students/webcamerascreen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AddStudentScreen extends StatefulWidget {
   final String token;
@@ -31,10 +38,87 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   DateTime? _selectedDate;
   bool _isLoading = false;
 
+  XFile? _selectedPhoto;
+  bool _isTakingPhoto = false;
+
+  Uint8List? _selectedPhotoBytes; // Usado para web
+  File? _selectedPhotoFile; // Usado para mobile/desktop
+
   @override
   void initState() {
     super.initState();
     apiService = StudentsService(token: widget.token);
+  }
+
+  Future<void> _takePhoto() async {
+    setState(() => _isTakingPhoto = true);
+
+    try {
+      if (kIsWeb) {
+        // Solução para web
+        final ImagePicker picker = ImagePicker();
+        final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+
+        if (photo != null) {
+          final bytes = await photo.readAsBytes();
+          setState(() {
+            _selectedPhotoBytes = bytes;
+          });
+        }
+      } else {
+        // Solução para mobile/desktop
+        final photo = await Navigator.of(context).push<Uint8List>(
+          MaterialPageRoute(builder: (context) => WebCameraScreen()),
+        );
+
+        if (photo != null) {
+          final directory = await getTemporaryDirectory();
+          final file = File(
+              '${directory.path}/student_photo_${DateTime.now().millisecondsSinceEpoch}.jpg');
+          await file.writeAsBytes(photo);
+          setState(() {
+            _selectedPhotoFile = file;
+          });
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao capturar foto: $e')),
+      );
+    } finally {
+      setState(() => _isTakingPhoto = false);
+    }
+  }
+
+  Future<void> _pickPhoto() async {
+    setState(() => _isTakingPhoto = true);
+
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? photo = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 85,
+      );
+
+      if (photo != null) {
+        if (kIsWeb) {
+          final bytes = await photo.readAsBytes();
+          setState(() {
+            _selectedPhotoBytes = bytes;
+          });
+        } else {
+          setState(() {
+            _selectedPhotoFile = File(photo.path);
+          });
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao selecionar foto: $e')),
+      );
+    } finally {
+      setState(() => _isTakingPhoto = false);
+    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -54,36 +138,90 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
+      setState(() => _isLoading = true);
 
       try {
-        await apiService.createStudent(
+        // No seu formulário de cadastro:
+        final result = await StudentsService(token: widget.token).createStudent(
           name: _nameController.text,
           father: _fatherController.text,
           cpf: _cpfController.text,
           phonenumber: _phoneController.text,
+          birth: _birthController.text,
           mother: _motherController.text,
           address: _addressController.text,
           neighborhood: _neighborhoodController.text,
-          birth: _birthController.text,
+          // photo: _selectedPhoto, // XFile obtido do image_picker
         );
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Aluno cadastrado com sucesso!')),
         );
-
-        Navigator.of(context).pop(true); // Retorna true indicando sucesso
+        Navigator.of(context).pop(true);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Erro ao cadastrar aluno: $e')),
         );
       } finally {
-        setState(() {
-          _isLoading = false;
-        });
+        setState(() => _isLoading = false);
       }
+    }
+  }
+
+  Future<void> _getPhoto({bool fromCamera = true}) async {
+    setState(() => _isTakingPhoto = true);
+
+    try {
+      if (kIsWeb) {
+        // Para web
+        final picker = ImagePicker();
+        final pickedFile = await (fromCamera
+            ? picker.pickImage(source: ImageSource.camera)
+            : picker.pickImage(source: ImageSource.gallery));
+
+        if (pickedFile != null) {
+          final bytes = await pickedFile.readAsBytes();
+          setState(() {
+            _selectedPhotoBytes = bytes;
+            _selectedPhotoFile = null; // Não usado na web
+          });
+        }
+      } else {
+        // Para mobile/desktop
+        if (fromCamera) {
+          final photo = await Navigator.of(context).push<Uint8List>(
+            MaterialPageRoute(builder: (context) => WebCameraScreen()),
+          );
+          if (photo != null) {
+            final directory = await getTemporaryDirectory();
+            final file = File(
+                '${directory.path}/student_photo_${DateTime.now().millisecondsSinceEpoch}.jpg');
+            await file.writeAsBytes(photo);
+            setState(() {
+              _selectedPhotoFile = file;
+              _selectedPhotoBytes = null; // Só usado na web
+            });
+          }
+        } else {
+          final picker = ImagePicker();
+          final pickedFile =
+              await picker.pickImage(source: ImageSource.gallery);
+          if (pickedFile != null) {
+            setState(() {
+              _selectedPhotoFile = File(pickedFile.path);
+              _selectedPhotoBytes = null; // Só usado na web
+            });
+          }
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Erro ao ${fromCamera ? 'capturar' : 'selecionar'} foto: $e')),
+      );
+    } finally {
+      setState(() => _isTakingPhoto = false);
     }
   }
 
@@ -127,6 +265,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _motherController,
                 decoration: const InputDecoration(
@@ -203,6 +342,73 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   }
                   return null;
                 },
+              ),
+              const SizedBox(height: 16),
+              // Replace the existing GestureDetector with this improved version
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          leading: Icon(Icons.camera),
+                          title: Text('Tirar Foto'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            _takePhoto();
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.photo_library),
+                          title: Text('Escolher da Galeria'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            _pickPhoto();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: _isTakingPhoto
+                      ? Center(child: CircularProgressIndicator())
+                      : (_selectedPhotoFile != null ||
+                              _selectedPhotoBytes != null)
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: kIsWeb
+                                  ? Image.memory(
+                                      _selectedPhotoBytes!,
+                                      width: double.infinity,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                      _selectedPhotoFile!,
+                                      width: double.infinity,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                    ),
+                            )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.camera_alt,
+                                    size: 50, color: Colors.grey),
+                                SizedBox(height: 8),
+                                Text('Adicionar Foto',
+                                    style: TextStyle(color: Colors.grey)),
+                              ],
+                            ),
+                ),
               ),
               const SizedBox(height: 16),
               TextFormField(
