@@ -28,25 +28,43 @@ class _StudentsScreenState extends State<StudentsScreen> {
   @override
   void initState() {
     super.initState();
-    apiService = StudentsService(token: widget.token);
-    _refreshStudents();
+    apiService = StudentsService();
+
+    // Executa após o build inicial
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.token.isNotEmpty) {
+        print('Token pós-build: ${widget.token}');
+        _refreshStudents();
+      } else {
+        print('Token ausente!');
+      }
+    });
   }
 
   void _refreshStudents() {
+    print('Refresh com token: ${widget.token}');
     setState(() {
-      futureStudents = apiService.fetchStudents(searchQuery: currentSearch);
+      futureStudents = apiService.fetchStudents(
+        searchQuery: currentSearch,
+        token: widget.token,
+      );
     });
   }
 
   void _searchStudents() {
     setState(() {
       currentSearch = searchController.text;
-      futureStudents = apiService.fetchStudents(searchQuery: currentSearch);
+      futureStudents = apiService.fetchStudents(
+        searchQuery: currentSearch,
+        token: widget.token,
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('Token no build: ${widget.token}');
+
     return Scaffold(
       backgroundColor: lightColor,
       body: Padding(
@@ -106,7 +124,21 @@ class _StudentsScreenState extends State<StudentsScreen> {
                   return Center(
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
-                      child: Text('Erro: ${snapshot.error}'),
+                      child: Column(
+                        children: [
+                          Text('Erro ao carregar estudantes'),
+                          SizedBox(height: 10),
+                          Text(
+                            '${snapshot.error}',
+                            style: TextStyle(color: Colors.red),
+                            textAlign: TextAlign.center,
+                          ),
+                          ElevatedButton(
+                            onPressed: _refreshStudents,
+                            child: Text('Tentar novamente'),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

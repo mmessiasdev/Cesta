@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:io' as io;
 import 'package:Cesta/component/buttons.dart';
 import 'package:Cesta/component/padding.dart';
 import 'package:Cesta/service/remote/baskets/crud.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:Cesta/component/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
-import 'package:image_picker_web/image_picker_web.dart';
+// import 'package:image_picker_web/image_picker_web.dart';
 
 class AddBasketScreen extends StatefulWidget {
   final String token;
@@ -158,39 +159,38 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
     }
   }
 
-  Future<void> _takePhoto() async {
-    try {
-      if (kIsWeb) {
-        // Para web - usa nossa implementação personalizada
-        final imageBytes = await Navigator.push<Uint8List>(
-          context,
-          MaterialPageRoute(builder: (context) => WebCameraScreen()),
-        );
+  void _takePhoto() async {
+    final ImagePicker picker = ImagePicker();
 
-        if (imageBytes != null) {
-          final image = XFile.fromData(
-            imageBytes,
-            name: 'foto_${DateTime.now().millisecondsSinceEpoch}.jpg',
-            mimeType: 'image/jpeg',
-          );
-          setState(() => _comprovantImages.add(image));
-        }
-      } else if (Platform.isAndroid || Platform.isIOS) {
-        // Para mobile
-        final image = await ImagePicker().pickImage(
+    try {
+      XFile? image;
+
+      if (kIsWeb) {
+        // Para Web
+        image = await picker.pickImage(
           source: ImageSource.camera,
           maxWidth: 1800,
           maxHeight: 1800,
           imageQuality: 90,
         );
-        if (image != null) {
-          setState(() => _comprovantImages.add(image));
-        }
+      } else if (io.Platform.isAndroid || io.Platform.isIOS) {
+        // Para Android/iOS
+        image = await picker.pickImage(
+          source: ImageSource.camera,
+          maxWidth: 1800,
+          maxHeight: 1800,
+          imageQuality: 90,
+        );
+      } else {
+        print("Plataforma não suportada para captura de foto.");
+        return;
+      }
+
+      if (image != null) {
+        setState(() => _comprovantImages.add(image!));
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao capturar imagem: ${e.toString()}')),
-      );
+      print("Erro ao capturar foto: $e");
     }
   }
 

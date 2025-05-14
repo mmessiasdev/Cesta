@@ -37,7 +37,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
       child: SizedBox(
           child: GetBuilder<DashboardController>(
@@ -50,8 +49,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     index: controller.tabIndex,
                     children: [
                       StudentsScreen(
-                        token: token,
-                        profileId: int.parse(profileId.toString()),
+                        token: token ?? "",
+                        profileId: int.tryParse(profileId?.toString() ?? "") ??
+                            0, // ou outro valor padrão
                       ),
                       AccountScreen(
                         buttom: false,

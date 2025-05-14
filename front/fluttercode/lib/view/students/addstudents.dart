@@ -47,7 +47,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   @override
   void initState() {
     super.initState();
-    apiService = StudentsService(token: widget.token);
+    apiService = StudentsService();
   }
 
   Future<void> _takePhoto() async {
@@ -67,19 +67,19 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
         }
       } else {
         // Solução para mobile/desktop
-        final photo = await Navigator.of(context).push<Uint8List>(
-          MaterialPageRoute(builder: (context) => WebCameraScreen()),
-        );
+        // final photo = await Navigator.of(context).push<Uint8List>(
+        //   MaterialPageRoute(builder: (context) => WebCameraScreen()),
+        // );
 
-        if (photo != null) {
-          final directory = await getTemporaryDirectory();
-          final file = File(
-              '${directory.path}/student_photo_${DateTime.now().millisecondsSinceEpoch}.jpg');
-          await file.writeAsBytes(photo);
-          setState(() {
-            _selectedPhotoFile = file;
-          });
-        }
+        // if (photo != null) {
+        //   final directory = await getTemporaryDirectory();
+        //   final file = File(
+        //       '${directory.path}/student_photo_${DateTime.now().millisecondsSinceEpoch}.jpg');
+        //   await file.writeAsBytes(photo);
+        //   setState(() {
+        //     _selectedPhotoFile = file;
+        //   });
+        // }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -142,7 +142,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
       try {
         // No seu formulário de cadastro:
-        final result = await StudentsService(token: widget.token).createStudent(
+        final result = await StudentsService().createStudent(
           name: _nameController.text,
           father: _fatherController.text,
           cpf: _cpfController.text,
@@ -151,6 +151,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
           mother: _motherController.text,
           address: _addressController.text,
           neighborhood: _neighborhoodController.text,
+          token: widget.token,
           // photo: _selectedPhoto, // XFile obtido do image_picker
         );
 
@@ -189,19 +190,19 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       } else {
         // Para mobile/desktop
         if (fromCamera) {
-          final photo = await Navigator.of(context).push<Uint8List>(
-            MaterialPageRoute(builder: (context) => WebCameraScreen()),
-          );
-          if (photo != null) {
-            final directory = await getTemporaryDirectory();
-            final file = File(
-                '${directory.path}/student_photo_${DateTime.now().millisecondsSinceEpoch}.jpg');
-            await file.writeAsBytes(photo);
-            setState(() {
-              _selectedPhotoFile = file;
-              _selectedPhotoBytes = null; // Só usado na web
-            });
-          }
+          // final photo = await Navigator.of(context).push<Uint8List>(
+          //   MaterialPageRoute(builder: (context) => WebCameraScreen()),
+          // );
+          // if (photo != null) {
+          //   final directory = await getTemporaryDirectory();
+          //   final file = File(
+          //       '${directory.path}/student_photo_${DateTime.now().millisecondsSinceEpoch}.jpg');
+          //   await file.writeAsBytes(photo);
+          //   setState(() {
+          //     _selectedPhotoFile = file;
+          //     _selectedPhotoBytes = null; // Só usado na web
+          //   });
+          // }
         } else {
           final picker = ImagePicker();
           final pickedFile =
@@ -343,73 +344,73 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
-              // Replace the existing GestureDetector with this improved version
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListTile(
-                          leading: Icon(Icons.camera),
-                          title: Text('Tirar Foto'),
-                          onTap: () {
-                            Navigator.pop(context);
-                            _takePhoto();
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.photo_library),
-                          title: Text('Escolher da Galeria'),
-                          onTap: () {
-                            Navigator.pop(context);
-                            _pickPhoto();
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                child: Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: _isTakingPhoto
-                      ? Center(child: CircularProgressIndicator())
-                      : (_selectedPhotoFile != null ||
-                              _selectedPhotoBytes != null)
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: kIsWeb
-                                  ? Image.memory(
-                                      _selectedPhotoBytes!,
-                                      width: double.infinity,
-                                      height: 150,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.file(
-                                      _selectedPhotoFile!,
-                                      width: double.infinity,
-                                      height: 150,
-                                      fit: BoxFit.cover,
-                                    ),
-                            )
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.camera_alt,
-                                    size: 50, color: Colors.grey),
-                                SizedBox(height: 8),
-                                Text('Adicionar Foto',
-                                    style: TextStyle(color: Colors.grey)),
-                              ],
-                            ),
-                ),
-              ),
+              // const SizedBox(height: 16),
+              // // Replace the existing GestureDetector with this improved version
+              // GestureDetector(
+              //   onTap: () {
+              //     showModalBottomSheet(
+              //       context: context,
+              //       builder: (context) => Column(
+              //         mainAxisSize: MainAxisSize.min,
+              //         children: [
+              //           ListTile(
+              //             leading: Icon(Icons.camera),
+              //             title: Text('Tirar Foto'),
+              //             onTap: () {
+              //               Navigator.pop(context);
+              //               _takePhoto();
+              //             },
+              //           ),
+              //           ListTile(
+              //             leading: Icon(Icons.photo_library),
+              //             title: Text('Escolher da Galeria'),
+              //             onTap: () {
+              //               Navigator.pop(context);
+              //               _pickPhoto();
+              //             },
+              //           ),
+              //         ],
+              //       ),
+              //     );
+              //   },
+              //   child: Container(
+              //     height: 150,
+              //     decoration: BoxDecoration(
+              //       color: Colors.grey[200],
+              //       borderRadius: BorderRadius.circular(8),
+              //     ),
+              //     child: _isTakingPhoto
+              //         ? Center(child: CircularProgressIndicator())
+              //         : (_selectedPhotoFile != null ||
+              //                 _selectedPhotoBytes != null)
+              //             ? ClipRRect(
+              //                 borderRadius: BorderRadius.circular(8),
+              //                 child: kIsWeb
+              //                     ? Image.memory(
+              //                         _selectedPhotoBytes!,
+              //                         width: double.infinity,
+              //                         height: 150,
+              //                         fit: BoxFit.cover,
+              //                       )
+              //                     : Image.file(
+              //                         _selectedPhotoFile!,
+              //                         width: double.infinity,
+              //                         height: 150,
+              //                         fit: BoxFit.cover,
+              //                       ),
+              //               )
+              //             : Column(
+              //                 mainAxisAlignment: MainAxisAlignment.center,
+              //                 children: [
+              //                   Icon(Icons.camera_alt,
+              //                       size: 50, color: Colors.grey),
+              //                   SizedBox(height: 8),
+              //                   Text('Adicionar Foto',
+              //                       style: TextStyle(color: Colors.grey)),
+              //                 ],
+              //               ),
+              //   ),
+              // ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _birthController,
