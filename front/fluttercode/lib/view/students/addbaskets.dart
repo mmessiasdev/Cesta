@@ -220,8 +220,6 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
   }
 
   Future<void> _saveBasket() async {
-    setState(() => _isLoading = true);
-
     try {
       final response = await _basketService.addBasket(
           studentId: widget.studentId,
@@ -229,7 +227,8 @@ class _AddBasketScreenState extends State<AddBasketScreen> {
           profileId: widget.profileId);
 
       if (response.statusCode == 200) {
-        Navigator.pop(context, true);
+        setState(() => _isLoading = true);
+        Navigator.of(context).pop(true); // Retorna true indicando sucesso
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Cesta básica adicionada com sucesso!')),
         );

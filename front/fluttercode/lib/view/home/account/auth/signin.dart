@@ -37,6 +37,8 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
+  bool _isLoading = false;
+
   // List<Widget> get _pages => [
   //       InputLogin(
   //         title: "Email ou CPF",
@@ -143,6 +145,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             GestureDetector(
                               onTap: () {
                                 if (_formKey.currentState!.validate()) {
+                                  setState(() => _isLoading = true);
+
                                   authController.signIn(
                                       email: emailController.text,
                                       password: passwordController.text);

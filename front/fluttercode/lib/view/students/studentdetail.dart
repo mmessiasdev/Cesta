@@ -1,13 +1,14 @@
 import 'package:Cesta/component/buttons.dart';
 import 'package:Cesta/component/padding.dart';
 import 'package:Cesta/env.dart';
+import 'package:Cesta/service/remote/students/crud.dart';
 import 'package:Cesta/view/students/addbaskets.dart';
 import 'package:flutter/material.dart';
 import 'package:Cesta/model/students.dart';
 import 'package:Cesta/component/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class StudentDetailScreen extends StatelessWidget {
+class StudentDetailScreen extends StatefulWidget {
   final Student student;
   final String token;
   final int profileId;
@@ -20,11 +21,27 @@ class StudentDetailScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<StudentDetailScreen> createState() => _StudentDetailScreenState();
+}
+
+class _StudentDetailScreenState extends State<StudentDetailScreen> {
+  late Student _currentStudent;
+  late StudentsService _studentsService;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentStudent = widget.student;
+    _studentsService = StudentsService();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: lightColor,
       appBar: AppBar(
-        title: Text(student.name ?? 'Detalhes do Aluno'),
+        title: Text(widget.student.name ?? 'Detalhes do Aluno'),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -44,21 +61,18 @@ class StudentDetailScreen extends StatelessWidget {
                     colorText: lightColor,
                   ),
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddBasketScreen(
-                          token: token,
-                          studentId:
-                              student.id ?? 0, // Adicionado fallback para id
-                          profileId: profileId,
+                          token: widget.token,
+                          studentId: widget.student.id ?? 0,
+                          profileId: widget.profileId,
                         ),
                       ),
-                    ).then((success) {
-                      if (success == true) {
-                        // Atualizar lógica se necessário
-                      }
-                    });
+                    ).then((_) => {
+                          Navigator.pop(context, true),
+                        });
                   },
                 ),
                 const SizedBox(height: 24),
@@ -83,35 +97,40 @@ class StudentDetailScreen extends StatelessWidget {
                 radius: 50,
                 backgroundColor: Colors.blue.shade100,
                 child: Text(
-                  (student.name?.isNotEmpty ?? false) ? student.name![0] : '?',
+                  (widget.student.name?.isNotEmpty ?? false)
+                      ? widget.student.name![0]
+                      : '?',
                   style: const TextStyle(fontSize: 40, color: Colors.blue),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            _buildDetailItem('Nome completo', student.name ?? 'Não informado'),
+            _buildDetailItem(
+                'Nome completo', widget.student.name ?? 'Não informado'),
             _buildDetailItem(
                 'Nome do pai',
-                (student.father?.isNotEmpty ?? false)
-                    ? student.father!
+                (widget.student.father?.isNotEmpty ?? false)
+                    ? widget.student.father!
                     : 'Não informado'),
             _buildDetailItem(
                 'Nome da mãe',
-                (student.mother?.isNotEmpty ?? false)
-                    ? student.mother!
+                (widget.student.mother?.isNotEmpty ?? false)
+                    ? widget.student.mother!
                     : 'Não informado'),
-            _buildDetailItem('CPF', _formatCPF(student.cpf)),
-            _buildDetailItem('Telefone', _formatPhone(student.phonenumber)),
-            _buildDetailItem('Bairro', _formatPhone(student.neighborhood)),
-            _buildDetailItem('Endereço', _formatPhone(student.address)),
+            _buildDetailItem('CPF', _formatCPF(widget.student.cpf)),
             _buildDetailItem(
-                'Data de nascimento', _formatBirthDate(student.birth)),
+                'Telefone', _formatPhone(widget.student.phonenumber)),
+            _buildDetailItem(
+                'Bairro', _formatPhone(widget.student.neighborhood)),
+            _buildDetailItem('Endereço', _formatPhone(widget.student.address)),
+            _buildDetailItem(
+                'Data de nascimento', _formatBirthDate(widget.student.birth)),
             const Divider(height: 30),
             _buildDetailItem(
-                'Data de cadastro', _formatDateTime(student.createdAt),
+                'Data de cadastro', _formatDateTime(widget.student.createdAt),
                 secondary: true),
             _buildDetailItem(
-                'Última atualização', _formatDateTime(student.updatedAt),
+                'Última atualização', _formatDateTime(widget.student.updatedAt),
                 secondary: true),
           ],
         ),
@@ -158,7 +177,7 @@ class StudentDetailScreen extends StatelessWidget {
   }
 
   Widget _buildBasketsSection(BuildContext context) {
-    final sortedBaskets = (student.baskets ?? []).toList()
+    final sortedBaskets = (widget.student.baskets ?? []).toList()
       ..sort((a, b) => (b.createdAt ?? '').compareTo(a.createdAt ?? ''));
 
     if (sortedBaskets.isEmpty) {
@@ -190,7 +209,7 @@ class StudentDetailScreen extends StatelessWidget {
   }
 
   Widget _buildBasketCard(Basket basket, BuildContext context) {
-    final isMostRecent = (student.baskets ?? [])
+    final isMostRecent = (widget.student.baskets ?? [])
             .map((b) => b.createdAt)
             .reduce((a, b) => (a ?? '').compareTo(b ?? '') > 0 ? a : b) ==
         basket.createdAt;

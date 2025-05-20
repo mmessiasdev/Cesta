@@ -29,11 +29,12 @@ class _StudentsScreenState extends State<StudentsScreen> {
   void initState() {
     super.initState();
     apiService = StudentsService();
+    // Inicializa imediatamente com um Future vazio
+    futureStudents = Future.value([]);
 
     // Executa após o build inicial
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.token.isNotEmpty) {
-        print('Token pós-build: ${widget.token}');
         _refreshStudents();
       } else {
         print('Token ausente!');
@@ -42,7 +43,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
   }
 
   void _refreshStudents() {
-    print('Refresh com token: ${widget.token}');
     setState(() {
       futureStudents = apiService.fetchStudents(
         searchQuery: currentSearch,
@@ -63,8 +63,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Token no build: ${widget.token}');
-
     return Scaffold(
       backgroundColor: lightColor,
       body: Padding(
@@ -166,7 +164,8 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                 profileId: widget.profileId,
                               ),
                             ),
-                          );
+                          ).then(
+                              (_) => _refreshStudents()); // REMOVA ESTA LINHA
                         },
                         child: Card(
                           margin: defaultPadding,
