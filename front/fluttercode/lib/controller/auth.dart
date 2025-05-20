@@ -112,6 +112,7 @@ class AuthController extends GetxController {
 
           EasyLoading.showSuccess("Bem vindo ao Analytics");
           Navigator.of(Get.overlayContext!).pushReplacementNamed('/');
+          
         } else {
           EasyLoading.showError(
               'Alguma coisa deu errado. Tente novamente mais tarde...');

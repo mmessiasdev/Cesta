@@ -63,6 +63,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _refreshStudents();
     return Scaffold(
       backgroundColor: lightColor,
       body: Padding(
